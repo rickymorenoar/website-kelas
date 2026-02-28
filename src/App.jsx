@@ -12,16 +12,16 @@ const App = () => {
 
   const waliKelas = [
     { grade: "Wali Kelas 7", name: "A. Widyanti", img: "public/bu-widya.png", quote: "Guru Bahasa Inggris" },
-    { grade: "Wali Kelas 8", name: "Ana Eka Rizky", img: "https://via.placeholder.com/150", quote: "Tetap konsisten." },
-    { grade: "Wali Kelas 9", name: "Endang Sustyaningsih S. P.", img: "https://via.placeholder.com/150", quote: "Terbanglah tinggi." },
+    { grade: "Wali Kelas 8", name: "Ana Eka Rizky", img: "public/bu-ana.png", quote: "Tetap konsisten." },
+    { grade: "Wali Kelas 9", name: "Endang Sustyaningsih S. P.", img: "public/bu-endang.png", quote: "Terbanglah tinggi." },
   ];
 
   const pengurus = [
-    { role: "Ketua Kelas",       name: "Nabila Amalia H.",      img: "" },
-    { role: "Wakil Ketua Kelas", name: "Taskya Ayu K.",          img: "" },
-    { role: "Sekretaris 1",      name: "Olivia Agustina T.",     img: "" },
-    { role: "Sekretaris 2",      name: "Margareta Anggani P.D",  img: "" },
-    { role: "Bendahara 1",       name: "Talitha Rana I.",        img: "" },
+    { role: "Ketua Kelas",       name: "Nabila Amalia H.",      img: "public/absen21.png" },
+    { role: "Wakil Ketua Kelas", name: "Taskya Ayu K.",          img: "public/absen31.png" },
+    { role: "Sekretaris 1",      name: "Olivia Agustina T.",     img: "public/absen26.png" },
+    { role: "Sekretaris 2",      name: "Margareta Anggani P.D",  img: "public/absen16.png" },
+    { role: "Bendahara 1",       name: "Talitha Rana I.",        img: "public/absen30.png" },
     { role: "Bendahara 2",       name: "Devano Fernando B.",     img: "public/absen9.png" },
   ];
 
@@ -37,21 +37,21 @@ const App = () => {
     { name: "Fadhil Rizky F.",   img: "public/absen10.png" },
     { name: "Faizah Eka M.",  img: "public/absen11.png" },
     { name: "Faizah Febiana M.",  img: "public/absen12.png" },
-    { name: "Ghaisani Batrisya A.",  img: "public/absen11.png" },
-    { name: "Inneke Alya K.",  img: "public/absen11.png" },
-    { name: "Levina Fitria S.",  img: "public/absen11.png" },
-    { name: "M. Affan Putra H.",  img: "public/absen11.png" },
-    { name: "M. Asyam Hadyan P.",  img: "public/absen11.png" },
-    { name: "M. Helmy Radithya",  img: "public/absen11.png" },
-    { name: "M. Ichwan Rahmatulloh",  img: "public/absen11.png" },
-    { name: "M. Reval Fairus A.",  img: "public/absen11.png" },
-    { name: "Nabila Azkadina",  img: "public/absen11.png" },
-    { name: "Nafa Wahyu Putri Hidayat",  img: "" },
-    { name: "Nafis Aulia Nadjwa P.",  img: "public/absen11.png" },
-    { name: "Ricky Moreno A.R.",  img: "" },
-    { name: "Rohadatul Aisy",  img: "public/absen11.png" },
-    { name: "Safira Cahya Mahardika",  img: "public/absen11.png" },
-    { name: "Muhammad Yohanes Adrina B.S.",  img: "public/absen11.png" },
+    { name: "Ghaisani Batrisya A.",  img: "public/absen13.png" },
+    { name: "Inneke Alya K.",  img: "public/absen14.png" },
+    { name: "Levina Fitria S.",  img: "public/absen15.png" },
+    { name: "M. Affan Putra H.",  img: "public/absen17.png" },
+    { name: "M. Asyam Hadyan P.",  img: "public/absen18.png" },
+    { name: "M. Helmy Radithya",  img: "public/absen19.png" },
+    { name: "M. Ichwan Rahmatulloh",  img: "public/absen20.png" },
+    { name: "M. Reval Fairus A.",  img: "public/absen21.png" },
+    { name: "Nabila Azkadina",  img: "public/absen23.png" },
+    { name: "Nafa Wahyu Putri Hidayat",  img: "public/absen24.png" },
+    { name: "Nafis Aulia Nadjwa P.",  img: "public/absen25.png" },
+    { name: "Ricky Moreno A.R.",  img: "public/absen27.png" },
+    { name: "Rohadatul Aisy",  img: "public/absen28.png" },
+    { name: "Safira Cahya Mahardika",  img: "public/absen29.png" },
+    { name: "Muhammad Yohanes Adrina B.S.",  img: "public/absen32.png" },
   ];
 
   const jadwal = [
@@ -67,7 +67,7 @@ const App = () => {
   // Ganti src dengan link foto kenangan kamu
   // caption: keterangan foto (opsional)
   const galeri = [
-    { src: "https://via.placeholder.com/600x400/1e3a5f/ffffff?text=Foto+1", caption: "Momen Perpisahan 🎓" },
+    { src: "public/kenangan1.png", caption: "Odl Ke Jogja Kelas 8 🚌" },
     { src: "https://via.placeholder.com/600x400/1a2f4a/ffffff?text=Foto+2", caption: "Field Trip Bareng 🚌" },
     { src: "https://via.placeholder.com/600x400/0f2035/ffffff?text=Foto+3", caption: "Pensi Kelas 🎭" },
     { src: "https://via.placeholder.com/600x400/172840/ffffff?text=Foto+4", caption: "Lomba 17 Agustus 🏆" },
