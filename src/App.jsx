@@ -60,14 +60,21 @@ const App = () => {
   ];
 
   const galeri = [
-    { src: "/kenangan1.png", caption: "Odl Ke Jogja Kelas 8 🚌📸" },
+    { src: "/kenangan7.png", caption: "Odl Ke Jogja Kelas 7 🚌📸" },
     { src: "/kenangan2.png", caption: "Buka Bersama Di Rumah Bendahara Kelas 7 🌙🍴" },
-    { src: "/kenangan3.png", caption: "Buka Bersama Di Sekolah Kelas 8 📸🍲" },
-    { src: "https://via.placeholder.com/600x400/172840/ffffff?text=Foto+4", caption: "Lorem ipsum 🏆" },
-    { src: "https://via.placeholder.com/600x400/1e3a5f/ffffff?text=Foto+5", caption: "Lorem ipsum 📸" },
-    { src: "https://via.placeholder.com/600x400/1a2f4a/ffffff?text=Foto+6", caption: "Lorem ipsum 🎂" },
-    { src: "https://via.placeholder.com/600x400/0f2035/ffffff?text=Foto+7", caption: "Lorem ipsum ⚽" },
-    { src: "https://via.placeholder.com/600x400/172840/ffffff?text=Foto+8", caption: "Lorem ipsum 😄" },
+    { src: "/kenangan4.png", caption: "Maulid Nabi Kelas 7 🕌✨" },
+    { src: "/kenangan8.png", caption: "Hari Pahlawan Kelas 7 🔥 🦅" },
+    { src: "/kenangan15.png", caption: "Upacara Bendera Kelas 7 🫡🇮🇩" },
+    { src: "/kenangan3.png", caption: "Buka Bersama Di Sekolah Kelas 8 🏫🍴" },
+    { src: "/kenangan1.png", caption: "Odl Ke Jogja Kelas 8 🚌📸" },
+    { src: "/kenangan6.png", caption: "Maulid Nabi Kelas 8 🕌🙏" },
+    { src: "/kenangan9.png", caption: "Hari Pahlawan Kelas 8 🔥 🦅" },
+    { src: "/kenangan10.png", caption: "Mancing Bersama Kelas 8 🎣🐟" },
+    { src: "/kenangan11.png", caption: "Upacara Bendera Kelas 8 🫡🇮🇩" },
+    { src: "/kenangan5.png", caption: "Ulang Tahun Bu Ana" },
+    { src: "/kenangan12.png", caption: "Upacara Bendera Kelas 9 🫡🇮🇩" },
+    { src: "/kenangan13.png", caption: "Maulid Nabi Kelas 9 🕌🤲" },
+    { src: "/kenangan14.png", caption: "Foto Ijazah Sebelum Kelulusan 📸👨‍🎓👩‍🎓" },
   ];
 
   useEffect(() => {
