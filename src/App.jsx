@@ -526,29 +526,41 @@ const App = () => {
 
                 {/* Dropdown panel */}
                 {showPlayer && (
-                  <div className="absolute top-full left-0 mt-2 w-56 bg-[#0f172a]/95 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl shadow-black/50 z-50 animate-scaleIn">
-                    <p className="text-[10px] text-slate-500 uppercase tracking-widest mb-3 font-bold">🎵 Background Music</p>
+                  <div className="absolute top-full left-0 mt-2 w-64 bg-[#0f172a]/98 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-2xl shadow-black/50 z-50 animate-scaleIn sm:left-0 max-sm:fixed max-sm:left-3 max-sm:right-3 max-sm:w-auto max-sm:top-[72px]">
+                    {/* Header */}
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="flex items-end gap-[2px] h-3">{[1,2,3].map(i=><div key={i} className={`w-[3px] rounded-full origin-bottom ${isIntroPaused ? 'bg-slate-600 h-[30%]' : 'wave-bar bg-blue-400'}`} style={{height:'100%'}}/>)}</div>
+                      <p className="text-[11px] text-slate-400 uppercase tracking-widest font-bold">Background Music</p>
+                    </div>
 
-                    {/* Play/Pause */}
+                    {/* Play/Pause — touch-friendly */}
                     <button
                       onClick={toggleIntroMusic}
-                      className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-bold text-sm transition-all duration-300 mb-3 ${isIntroPaused ? 'bg-blue-600 hover:bg-blue-500 text-white' : 'bg-white/5 hover:bg-white/10 text-slate-300'}`}
+                      className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-black text-sm transition-all duration-300 mb-4 active:scale-95 ${isIntroPaused ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/30' : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'}`}
                     >
-                      {isIntroPaused ? '▶ Play' : '⏸ Pause'}
+                      {isIntroPaused ? '▶  Play' : '⏸  Pause'}
                     </button>
 
-                    {/* Volume slider */}
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-slate-500">🔈</span>
-                      <input
-                        type="range" min="0" max="1" step="0.05"
-                        value={introVolume}
-                        onChange={e => handleIntroVolume(parseFloat(e.target.value))}
-                        className="flex-1 h-1 rounded-full appearance-none bg-white/10 cursor-pointer accent-blue-500"
-                      />
-                      <span className="text-xs text-slate-500">🔊</span>
+                    {/* Volume label */}
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-[10px] text-slate-500 uppercase tracking-wider">Volume</span>
+                      <span className="text-[11px] text-blue-400 font-bold">{Math.round(introVolume * 100)}%</span>
                     </div>
-                    <p className="text-center text-[10px] text-slate-600 mt-2">{Math.round(introVolume * 100)}%</p>
+
+                    {/* Volume slider — bigger touch target */}
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">🔈</span>
+                      <div className="flex-1 relative py-3 cursor-pointer">
+                        <input
+                          type="range" min="0" max="1" step="0.05"
+                          value={introVolume}
+                          onChange={e => handleIntroVolume(parseFloat(e.target.value))}
+                          className="w-full h-2 rounded-full appearance-none bg-white/10 cursor-pointer accent-blue-500"
+                          style={{touchAction: 'none'}}
+                        />
+                      </div>
+                      <span className="text-sm">🔊</span>
+                    </div>
                   </div>
                 )}
               </div>
