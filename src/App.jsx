@@ -356,7 +356,7 @@ const App = () => {
     { name: "M. Ichwan Rahmatulloh", img: "/absen20.webp" },
     { name: "M. Reval Fairus A.",    img: "/absen22.webp" },
     { name: "Nabila Azkadina",       img: "/absen23.webp" },
-    { name: "Nafa Wahyu P. H.",      img: "/absen24.webp" },
+    { name: "Nafa Wahyu P. H.",      img: "/rickysukadia.webp" },
     { name: "Nafis Aulia Nadjwa P.", img: "/absen25.webp" },
     { name: "Ricky Moreno A.R.",     img: "/absen27.webp" },
     { name: "Rohadatul Aisy",        img: "/absen28.webp" },
