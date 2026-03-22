@@ -6,41 +6,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <title>AttractiveClass-V40 | Official Website Kelas 9A</title>
-    <meta name="description" content="Website resmi AttractiveClass-V40 SMPN 1 Buduran.">
-    <meta name="keywords" content="AttractiveClass, V40, Kelas Keren, SMPN 1 Buduran, SMP Negeri 1 Buduran">
+    
+    <meta name="description" content="Wadah kenangan dan kreativitas AttractiveClass-V40 SMPN 1 Buduran. Menjaga memori tetap abadi bersama 3 Pilar Walas.">
+    <meta name="keywords" content="AttractiveClass, V40, Kelas Keren, SMPN 1 Buduran, SMP Negeri 1 Buduran, 9A Buduran, Web Kelas 9A, Rickymorenoar, Nakys Store">
     <meta name="author" content="Rickymorenoar">
     <meta name="google-site-verification" content="eq70mDKOu5CF281qlt_SttQBNtUNl3pPzDWYy7mZoeE" />
 
-   <script>
-  // Deteksi apakah device touch (HP/tablet) atau bukan (laptop/desktop)
-  const isTouchDevice = () => window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    <meta property="og:title" content="AttractiveClass-V40 | Official Website" />
+    <meta property="og:description" content="Cek keseruan dan kenangan kelas 9A SMPN 1 Buduran di sini!" />
+    <meta property="og:image" content="/logo-9a.webp" /> <meta property="og:url" content="https://class-attractive-40.vercel.app/" />
+    <meta property="og:type" content="website" />
 
-  // Klik kanan — hanya tampil alert di laptop/desktop
-  document.addEventListener('contextmenu', e => {
-    e.preventDefault();
-    if (!isTouchDevice()) {
-      alert('Mau Bobol Web nya bang? Sorry Ga Bisa\n\nWeb ini dijagain sama Pagar Gaib Rickymorenoar.\nNakys Store Owner was here. 😂');
-      console.log("%cSTOP! %cMau ngapain hayo?", 
-        "color: red; font-size: 40px; font-weight: bold;", 
-        "color: white; font-size: 20px;");
-      console.log("Web ini dijagain sama Pagar Gaib Rickymorenoar. %cNakys Store Owner was here.", 
-        "font-style: italic; color: gray;");
-    }
-  });
+    <script>
+      // Deteksi device
+      const isTouchDevice = () => window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
-  document.onkeydown = e => {
-    if (e.keyCode == 123) return false;
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 73) return false;
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 74) return false;
-    if (e.ctrlKey && e.keyCode == 85) return false;
-  };
+      // Pagar Gaib 1: Klik Kanan
+      document.addEventListener('contextmenu', e => {
+        e.preventDefault();
+        if (!isTouchDevice()) {
+          alert('Mau Bobol Web nya bang? Sorry Ga Bisa\n\nWeb ini dijagain sama Pagar Gaib Rickymorenoar.\nNakys Store Owner was here. 😂');
+        }
+      });
 
-  console.log("%cSTOP!", "color: red; font-size: 50px; font-weight: bold;");
-  console.log("%cGokil, lu bisa tembus! Tapi tetep aja, ini buatan Rickymorenoar.", 
-    "color: #3b82f6; font-size: 18px; font-weight: bold;");
-  console.log("%c⚠️ Web ini diproteksi Pagar Gaib. Nakys Store Owner was here.", 
-    "color: gray; font-style: italic; font-size: 13px;");
-</script>
+      // Pagar Gaib 2: Shortcut Keyboard (Ctrl+U, F12, dkk)
+      document.onkeydown = e => {
+        if (
+          e.keyCode === 123 || // F12
+          (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || // Ctrl+Shift+I/J/C
+          (e.ctrlKey && e.keyCode === 85) // Ctrl+U (View Source)
+        ) {
+          e.preventDefault();
+          return false;
+        }
+      };
+
+      // Pagar Gaib 3: Console Log Warning
+      console.log("%cSTOP!", "color: red; font-size: 50px; font-weight: bold; -webkit-text-stroke: 1px black;");
+      console.log("%cGokil, lu bisa tembus! Tapi tetep aja, ini buatan Rickymorenoar.", "color: #3b82f6; font-size: 18px; font-weight: bold;");
+      console.log("%c⚠️ Web ini diproteksi Pagar Gaib. Nakys Store Owner was here.", "color: gray; font-style: italic; font-size: 13px;");
+      
+      // Tambahan: Cegah Drag Image (Biar foto kelas gak dicolong gampang)
+      document.addEventListener('dragstart', e => {
+        if (e.target.nodeName === 'IMG') e.preventDefault();
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>
