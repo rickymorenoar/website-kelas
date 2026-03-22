@@ -6,19 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <title>AttractiveClass-V40 | Official Website Kelas 9A</title>
-    <meta name="description" content="Website resmi AttractiveClass-V40 Kelas 9A SMPN 1 Buduran.">
-    <meta name="keywords" content="AttractiveClass, V40, Kelas 9A, SMPN 1 Buduran, Rickymorenoar">
+    <meta name="description" content="Website resmi AttractiveClass-V40 SMPN 1 Buduran.">
+    <meta name="keywords" content="AttractiveClass, V40, Kelas Keren, SMPN 1 Buduran, SMP Negeri 1 Buduran">
     <meta name="author" content="Rickymorenoar">
+    <meta name="google-site-verification" content="eq70mDKOu5CF281qlt_SttQBNtUNl3pPzDWYy7mZoeE" />
 
    <script>
+  // Deteksi apakah device touch (HP/tablet) atau bukan (laptop/desktop)
+  const isTouchDevice = () => window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+  // Klik kanan — hanya tampil alert di laptop/desktop
   document.addEventListener('contextmenu', e => {
     e.preventDefault();
-    alert('🚫 Dilarang klik kanan!\n\nWeb ini dijagain sama Pagar Gaib Rickymorenoar.\nNakas Store Owner was here. 👻');
-    console.log("%cSTOP! %cMau ngapain hayo?", 
-      "color: red; font-size: 40px; font-weight: bold;", 
-      "color: white; font-size: 20px;");
-    console.log("Web ini dijagain sama Pagar Gaib Rickymorenoar. %cNakys Store Owner was here.", 
-      "font-style: italic; color: gray;");
+    if (!isTouchDevice()) {
+      alert('Mau Bobol Web nya bang? Sorry Ga Bisa\n\nWeb ini dijagain sama Pagar Gaib Rickymorenoar.\nNakys Store Owner was here. 😂');
+      console.log("%cSTOP! %cMau ngapain hayo?", 
+        "color: red; font-size: 40px; font-weight: bold;", 
+        "color: white; font-size: 20px;");
+      console.log("Web ini dijagain sama Pagar Gaib Rickymorenoar. %cNakys Store Owner was here.", 
+        "font-style: italic; color: gray;");
+    }
   });
 
   document.onkeydown = e => {
@@ -29,7 +36,7 @@
   };
 
   console.log("%cSTOP!", "color: red; font-size: 50px; font-weight: bold;");
-  console.log("%cGokil, lu bisa tembus! Tapi tetep aja, ini buatan Rickymorenoar. 😎", 
+  console.log("%cGokil, lu bisa tembus! Tapi tetep aja, ini buatan Rickymorenoar.", 
     "color: #3b82f6; font-size: 18px; font-weight: bold;");
   console.log("%c⚠️ Web ini diproteksi Pagar Gaib. Nakys Store Owner was here.", 
     "color: gray; font-style: italic; font-size: 13px;");
