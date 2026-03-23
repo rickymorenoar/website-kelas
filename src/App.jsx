@@ -160,7 +160,7 @@ const easterEggs = [
     name: 'Ana Eka Rizky',
     photo: '/eggfoto4.webp',
     audio: '/eggsound4.mp3',
-    message: 'Terima kasih telah menjadi lebih dari sekadar guru, tapi juga teman yang paling pengertian. Terima kasih sudah selalu mendukung mimpi-mimpi kami tanpa pernah membuat kami merasa terbeban',
+    message: 'Terima kasih telah menjadi lebih dari sekadar guru, tapi juga teman yang paling pengertian. Terima kasih sudah selalu mendukung mimpi-mimpi kami tanpa pernah membuat kami merasa terbebani.',
     emoji: '🕶',
     color: 'from-yellow-400/30 to-amber-300/30',
     border: 'border-yellow-400/50',
