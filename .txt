@@ -1,0 +1,84 @@
+/**
+ * Google Apps Script — Class Attractive Form Handler
+ *
+ * CARA PASANG:
+ * 1. Buka script.google.com → New Project
+ * 2. Paste seluruh kode ini
+ * 3. Ganti FOLDER_ID dan EMAIL_TUJUAN di bawah
+ * 4. Klik Deploy → New Deployment → Web App
+ *    - Execute as: Me
+ *    - Who has access: Anyone
+ * 5. Copy URL deployment → paste ke App.jsx di GAS_URL
+ */
+
+const FOLDER_ID   = 'GANTI_DENGAN_FOLDER_ID_GOOGLE_DRIVE_KAMU';
+const EMAIL_TUJUAN = 'GANTI_DENGAN_EMAIL_KAMU@gmail.com';
+
+function doPost(e) {
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Content-Type': 'application/json',
+  };
+
+  try {
+    const data = JSON.parse(e.postData.contents);
+    const { nama, email, pesan, photoUrl, photoName } = data;
+
+    const timestamp = new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
+    let driveLink = '';
+
+    // Simpan foto ke Google Drive kalau ada
+    if (photoUrl) {
+      try {
+        const response = UrlFetchApp.fetch(photoUrl);
+        const blob     = response.getBlob().setName(photoName || `foto_${Date.now()}.jpg`);
+        const folder   = DriveApp.getFolderById(FOLDER_ID);
+        const file     = folder.createFile(blob);
+        file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+        driveLink = file.getUrl();
+      } catch (imgErr) {
+        driveLink = photoUrl; // fallback ke ImgBB link
+      }
+    }
+
+    // Kirim email notifikasi
+    const subject = `[Class Attractive] Pesan baru dari ${nama}`;
+    const body = `
+Pesan baru masuk di website Class Attractive 9A!
+
+━━━━━━━━━━━━━━━━━━━━━
+Nama    : ${nama}
+Email   : ${email}
+Waktu   : ${timestamp}
+━━━━━━━━━━━━━━━━━━━━━
+
+Pesan:
+${pesan}
+
+${driveLink ? `Foto: ${driveLink}` : 'Tidak ada foto'}
+
+━━━━━━━━━━━━━━━━━━━━━
+Dikirim otomatis dari class-attractive-40.vercel.app
+    `.trim();
+
+    GmailApp.sendEmail(EMAIL_TUJUAN, subject, body);
+
+    return ContentService
+      .createTextOutput(JSON.stringify({ success: true }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ success: false, error: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// Handle preflight CORS
+function doGet(e) {
+  return ContentService
+    .createTextOutput(JSON.stringify({ status: 'Class Attractive API ready' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}

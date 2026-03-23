@@ -127,135 +127,110 @@ const globalStyles = `
   html { scroll-behavior: smooth; }
 `;
 
-// ╔═══════════════════════════════════════════════════════════════════╗
-// ║  🥚 EASTER EGG CONFIG                                            ║
-// ║  Tambah / edit sesukamu!                                         ║
-// ║                                                                   ║
-// ║  triggers : kata yang memicu easter egg (huruf besar/kecil ok)   ║
-// ║  photo    : file foto di /public — upload dulu!                  ║
-// ║  audio    : file audio di /public                                ║
-// ║  message  : pesan rahasia                                        ║
-// ║  emoji    : emoji dekorasi                                        ║
-// ║  color    : gradient card (Tailwind from-xxx/20 to-xxx/20)       ║
-// ║  border   : warna border (Tailwind border-xxx/40)                ║
-// ╚═══════════════════════════════════════════════════════════════════╝
+/**
+ * Easter Egg Config
+ * Tambah atau edit entri di bawah sesukamu.
+ *
+ * triggers : array kata pemicu (case-insensitive)
+ * photo    : path file foto di /public
+ * audio    : path file audio di /public
+ * message  : pesan yang ditampilkan
+ * emoji    : emoji dekorasi
+ * color    : gradient Tailwind, format: from-xxx/30 to-xxx/30
+ * border   : border Tailwind, format: border-xxx/50
+ * longMessage : true = tidak ada auto-close, ada tombol tutup
+ * fullMessage : teks panjang yang bisa di-scroll (opsional)
+ */
 const easterEggs = [
 
-  // ──────────────────────────────────────────────────────────────────
-  // WALI KELAS
-  // ──────────────────────────────────────────────────────────────────
+  // Wali Kelas
   {
     triggers: ['widyanti', 'bu widya', 'widya'],
     name: 'A. Widyanti',
-    photo: '/egg-widyanti.webp',       // ← ganti nama file
-    audio: '/egg-widyanti.mp3',        // ← ganti nama file
-    message: '✏️ Guru Bahasa Inggris terbaik! Terima kasih Bu Widya 🌸',
-    emoji: '📚',
-    color: 'from-emerald-600/30 to-teal-600/30',
-    border: 'border-emerald-500/50',
+    photo: '/eggfoto3.webp',
+    audio: '/eggsound3.mp3',
+    message: 'Terima kasih telah menjadi jangkar kami. Saat dunia terasa sulit, tahu bahwa ada Ibu yang selalu berada di balik setiap langkah kami yang masih belajar ini dan Ibu yang selalu percaya pada kami adalah kekuatan terbesar yang kami miliki.',
+    emoji: '🛡',
+    color: 'from-sky-400/30 to-blue-300/30',
+    border: 'border-sky-400/50',
+    longMessage: true,
   },
   {
     triggers: ['ana', 'bu ana', 'ana eka'],
     name: 'Ana Eka Rizky',
-    photo: '/egg-ana.webp',
-    audio: '/egg-ana.mp3',
-    message: '🎨 Guru Prakarya paling kreatif! Happy Birthday Bu Ana 🎂',
-    emoji: '🎨',
-    color: 'from-pink-600/30 to-rose-600/30',
-    border: 'border-pink-500/50',
+    photo: '/eggfoto4.webp',
+    audio: '/eggsound4.mp3',
+    message: 'Terima kasih telah menjadi lebih dari sekadar guru, tapi juga teman yang paling pengertian. Terima kasih sudah selalu mendukung mimpi-mimpi kami tanpa pernah membuat kami merasa terbeban',
+    emoji: '🕶',
+    color: 'from-yellow-400/30 to-amber-300/30',
+    border: 'border-yellow-400/50',
+    longMessage: true,
   },
   {
     triggers: ['endang', 'bu endang', 'sustyaningsih'],
     name: 'Endang Sustyaningsih S.P.',
     photo: '/egg-endang.webp',
-    audio: '/egg-endang.mp3',
-    message: '🌹 Wali kelas 9 terbaik sepanjang masa! We love you Bu Endang 💙',
-    emoji: '👑',
-    color: 'from-violet-600/30 to-purple-600/30',
-    border: 'border-violet-500/50',
+    audio: '/eggsound.mp3',
+    message: 'Kami tahu nasehat Ibu mungkin terasa setiap hari, tapi kami mengerti itu adalah cara Ibu menunjukkan kasih sayang agar kami tetap berada di jalan yang benar. Terima kasih telah menjaga kami.',
+    emoji: '📖',
+    color: 'from-rose-900/30 to-red-800/30',
+    border: 'border-rose-800/50',
+    longMessage: true,
   },
 
-  // ──────────────────────────────────────────────────────────────────
-  // PENGURUS
-  // ──────────────────────────────────────────────────────────────────
   {
-    triggers: ['nabila amalia', 'ketua'],
-    name: 'Nabila Amalia H.',
-    photo: '/egg-nabila.webp',
-    audio: '/egg-nabila.mp3',
-    message: '👑 Ketua kelas paling keren se-9A! Terima kasih Nabila 🌟',
-    emoji: '👑',
-    color: 'from-yellow-600/30 to-amber-600/30',
-    border: 'border-yellow-500/50',
+    triggers: ['safira iwan', 'iwan safira', 'fira iwan', 'iwan fira'],
+    name: 'Iwan & Safira 🌙',
+    photo: '/eggfoto1.webp',
+    audio: '/eggsound1.mp3',
+    message: 'Halooo 🌙....',
+    fullMessage: `Halooo 🌙....
+
+Engga nyangka ya (sementara) itu sudah habis. Kisah kita udah berakhir dengan bahagia. Aku engga nyangka pada akhir masa SMP akan ada kenangan kayak gini. Jujur aku bahagia dan bersyukur tuhan ngasih 1 hadiah kelulusan yang indah banget. Dulu aku berpikir (knp tuhan ngasih perasaan ini ke aku? knp tuhan datengin kamu di hidup aku?) tapi seiring waktu aku nemuin jawaban dan dengan jawaban itu aku mulai memperbaiki diri sambil nyoba perlahan move on dari kamu.
+
+kamu tau jalan nya berat banget aku naik turun terus tapi akhirnya aku engga berhasil engga tau kenapa engga bisa tapi perlahan sudut pandang ku mulai berubah yang awal nya aku kek kesel kamu dateng di hidup ku sekarang beda aku bersyukur kamu dateng di hidup aku, walau perasaan ini belum hilang tapi kalo ngeliat kamu sekarang kayak udh bahagia banget padahal cuma liat kamu dari jauh. Tapi di situ letak nyaman nya, entah kenapa suka sama seseorang cuma dengan liat dia dari jauh dengan segala rahasia itu bahagia banget kek ada perasaan yang lega/puas gitu.
+
+Kita yang sekarang aku lebih suka engga tau kenapa gitu rasa nya lebih nyaman, damai dan indah. Naruh perasaan ke kamu buat hidup aku lebih baik, makasihhhh yaa. Naruh perasaan ke kamu beneran di luar kendali aku, awal nya aku cuma ngira kita bakal jadi teman aja. dan aku tau klo semua perasaan ini ada karenanya, mungkin ngelupain kamu adalah salah satu hal yg tertulis buat aku, ada sesuatu berharga buat aku yaitu nemuin seseorang yg ngebuat aku ngerasa beruntung banget, ga bisa di katakan secara singkat, karena terlalu beruntung nya aku di hadirkan dan juga di izinin ngenal sosok yg begitu sempurna, yg penyayang, yg tulus, yg baik.
+
+Sungguh keberuntungan yg berharga banget buat aku, kamu adalah sosok yg sempurna yg aku cerita in, iyaa aku beruntung bisa ketemu kmu. di kenalkan dgn seseorang yg aku anggap sempurna, apa bisa dibilang beruntung? iyaa bener, kmu suatu keberuntungan buat aku. ga ada yg bisa gantiin kamu, karna kmu ya cma kmu, ga ada yg bisa nyamain. makasihhh ya udh hadir di hidup aku, tapi setelah kita pisah.
+
+Aku berharap hidup kamu selalu di kelilingi kebahagiaan, kesuksesan, kesehatan, kedamaian. Aku engga tau sebanyak apa masalah atau perasaan yang kamu pendam tapi aku yakin kamu kuat dan bisa bertahan. Temuin rumah yaa nanti 🏠. Ohh iyaa aku punya 1 lagu yang selalu ingetin aku sama kisah kita yaitu lagu (Bahagia lagi) apalagi pas bagian "ku pastikan kita bahagia lagi" itu bener terjadi dan yaa "asing pada kata bahagia" itu juga terjadi.
+
+Be happy iwan 🌙.`,
+    emoji: '🌙',
+    color: 'from-indigo-600/30 to-violet-600/30',
+    border: 'border-indigo-500/50',
+    longMessage: true,
   },
+
+  // Tiga Pilar
   {
-    triggers: ['taskya', 'wakil'],
-    name: 'Taskya Ayu K.',
-    photo: '/egg-taskya.webp',
-    audio: '/egg-taskya.mp3',
-    message: '⭐ Wakil ketua yang selalu siap sedia! Kereeen Taskya 🎉',
-    emoji: '⭐',
-    color: 'from-cyan-600/30 to-sky-600/30',
-    border: 'border-cyan-500/50',
-  },
-  {
-    triggers: ['olivia', 'sekretaris'],
-    name: 'Olivia Agustina T.',
-    photo: '/egg-olivia.webp',
-    audio: '/egg-olivia.mp3',
-    message: '📝 Sekretaris paling rapi dan teliti! Makasih Olivia 💫',
-    emoji: '📝',
-    color: 'from-blue-600/30 to-indigo-600/30',
+    triggers: ['3 pilar', 'tiga pilar', '3pilar', 'wali kelas'],
+    name: 'Tiga Pilar Kelas 9A 🌟',
+    photo: '/bu-widya.webp',
+    audio: '/eggsound2.mp3',
+    message: 'Terima kasih kepada tiga pilar yang selalu menjaga, membimbing, dan menyayangi kita semua. Kalian adalah bagian terbaik dari perjalanan kelas 9A. 🙏💙',
+    fullMessage: `Terima kasih telah menjadi 'orang tua' kami di sekolah.
+
+Dimulai dari Bu Widya di kelas 7 yang dengan sabar menjadi pelindung dan selalu percaya pada kami di masa awal pencarian jati diri. 🛡️✨
+
+Berlanjut ke Bu Ana di kelas 8 yang selalu suportif, dermawan, dan menjadi sahabat paling gaul yang membuat masa remaja kami jauh lebih berwarna. 🕶️💸
+
+Hingga Bu Endang di kelas 9 yang dengan tegas dan penuh nasehat menjaga kami agar tidak salah melangkah sebelum kami benar-benar dilepas ke masa depan. 🧭❤️
+
+Ibu bertiga adalah pilar yang membuat kami kuat. Terima kasih telah selalu berada di belakang kami, mendukung setiap langkah, dan tidak pernah menyerah pada kenakalan kami. Kami bangga menjadi murid didikan Ibu semua! 🙏💙`,
+    multiPhoto: [
+      { photo: '/bu-widya.webp',  label: 'Bu Widyanti' },
+      { photo: '/bu-endang.webp', label: 'Bu Endang' },
+      { photo: '/bu-ana.webp',    label: 'Bu Ana' },
+    ],
+    emoji: '🌟',
+    color: 'from-blue-600/30 to-violet-600/30',
     border: 'border-blue-500/50',
-  },
-  {
-    triggers: ['margareta', 'anggani'],
-    name: 'Margareta Anggani P.D.',
-    photo: '/egg-margareta.webp',
-    audio: '/egg-margareta.mp3',
-    message: '✍️ Sekretaris 2 yang super duper kece! You rock Margareta 🔥',
-    emoji: '✍️',
-    color: 'from-fuchsia-600/30 to-pink-600/30',
-    border: 'border-fuchsia-500/50',
-  },
-  {
-    triggers: ['talitha', 'rana', 'bendahara'],
-    name: 'Talitha Rana I.',
-    photo: '/egg-talitha.webp',
-    audio: '/egg-talitha.mp3',
-    message: '💰 Bendahara terjujur se-universe! Saldo aman berkat Talitha 😄',
-    emoji: '💰',
-    color: 'from-green-600/30 to-emerald-600/30',
-    border: 'border-green-500/50',
-  },
-  {
-    triggers: ['devano', 'fernando'],
-    name: 'Devano Fernando B.',
-    photo: '/egg-devano.webp',
-    audio: '/egg-devano.mp3',
-    message: '💸 Bendahara 2 yang selalu on point! GG Devano 👊',
-    emoji: '💸',
-    color: 'from-orange-600/30 to-red-600/30',
-    border: 'border-orange-500/50',
+    longMessage: true,
   },
 
-  // ──────────────────────────────────────────────────────────────────
-  // MEMBER BIASA — tambah sendiri di bawah!
-  // ──────────────────────────────────────────────────────────────────
-  // {
-  //   triggers: ['nama', 'kata rahasia lain'],
-  //   name: 'Nama Lengkap',
-  //   photo: '/egg-nama.webp',
-  //   audio: '/egg-nama.mp3',
-  //   message: 'Pesan rahasia buat dia! 🎉',
-  //   emoji: '🌟',
-  //   color: 'from-blue-600/30 to-purple-600/30',
-  //   border: 'border-blue-500/50',
-  // },
-
-  // ──────────────────────────────────────────────────────────────────
-  // KATA RAHASIA KELAS
-  // ──────────────────────────────────────────────────────────────────
+  // Kata Rahasia Kelas
   {
     triggers: ['attractive', '9a', 'class attractive', '9 a'],
     name: 'Class Attractive 9A',
@@ -265,10 +240,11 @@ const easterEggs = [
     emoji: '🎓',
     color: 'from-blue-600/30 to-cyan-600/30',
     border: 'border-blue-500/50',
+    longMessage: true,
   },
 ];
 
-// ── DATA ─────────────────────────────────────────────────────────────────────
+// Data
 const waliKelas = [
   { grade: "Wali Kelas 7", name: "A. Widyanti",               img: "/bu-widya.webp",  quote: "Guru Bahasa Inggris" },
   { grade: "Wali Kelas 8", name: "Ana Eka Rizky",              img: "/bu-ana.webp",    quote: "Guru Prakarya." },
@@ -351,7 +327,7 @@ const navItems = [
   { label: 'Galeri',     id: 'galeri'    },
 ];
 
-// ── CONFETTI ──────────────────────────────────────────────────────────────────
+// Confetti
 const spawnConfetti = () => {
   const colors = ['#3b82f6','#8b5cf6','#06b6d4','#f59e0b','#10b981','#ef4444','#ec4899','#fff'];
   for (let i = 0; i < 70; i++) {
@@ -370,77 +346,123 @@ const spawnConfetti = () => {
   }
 };
 
-// ── EASTER EGG MODAL ──────────────────────────────────────────────────────────
-const EasterEggModal = ({ egg, onClose }) => {
+// Easter Egg Modal
+const EasterEggModal = ({ egg, onClose, introAudioRef }) => {
   const audioRef = useRef(null);
-  const DURATION = 8000;
+  const DURATION = egg.longMessage ? 0 : 8000;
 
   useEffect(() => {
     spawnConfetti();
+    // Pause background music
+    if (introAudioRef && introAudioRef.current) introAudioRef.current.pause();
     if (egg.audio) {
       audioRef.current = new Audio(egg.audio);
       audioRef.current.volume = 0.6;
       audioRef.current.play().catch(() => {});
     }
-    const t = setTimeout(onClose, DURATION);
+    if (!egg.longMessage) {
+      const t = setTimeout(onClose, DURATION);
+      return () => {
+        clearTimeout(t);
+        if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
+      };
+    }
     return () => {
-      clearTimeout(t);
       if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
     };
   }, []);
+
+  const displayMessage = egg.fullMessage || egg.message;
 
   return (
     <div className="fixed inset-0 z-[500] flex items-end md:items-center justify-center p-4 md:p-6 animate-fadeIn"
       onClick={onClose}>
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
 
-      <div className="relative w-full max-w-sm animate-eggSlideUp" onClick={e => e.stopPropagation()}
-        style={{ background: 'rgba(8,15,30,0.97)', borderRadius: '28px', border: `1px solid rgba(255,255,255,0.08)`, boxShadow: '0 40px 80px rgba(0,0,0,0.8)' }}>
+      <div
+        className="relative w-full animate-eggSlideUp flex flex-col"
+        onClick={e => e.stopPropagation()}
+        style={{
+          background: 'rgba(8,15,30,0.97)',
+          borderRadius: '28px',
+          border: '1px solid rgba(255,255,255,0.06)',
+          boxShadow: '0 30px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.04)',
+          maxWidth: '480px',
+          maxHeight: '88vh',
+        }}>
 
-        {/* colored glow top */}
-        <div className={`absolute top-0 left-0 right-0 h-1 rounded-t-[28px] bg-gradient-to-r ${egg.color.replace('/30','')} opacity-80`} />
+
 
         {/* close */}
         <button onClick={onClose}
           className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/8 hover:bg-white/15 flex items-center justify-center text-slate-500 hover:text-white transition-all z-10 text-sm">✕</button>
 
-        <div className="p-7">
-          {/* tag */}
+        {/* Header tetap di atas */}
+        <div className="flex-shrink-0 px-7 pt-7 pb-4">
           <div className="flex items-center gap-2 mb-5">
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full">🥚 Easter Egg!</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full">
+              🥚 Easter Egg
+            </span>
           </div>
 
-          {/* foto + emoji */}
-          <div className="flex items-center gap-5 mb-5">
-            <div className={`relative w-24 h-24 rounded-2xl overflow-hidden border-2 ${egg.border} flex-shrink-0`}
-              style={{ boxShadow: '0 8px 30px rgba(0,0,0,0.5)' }}>
-              <img src={egg.photo} alt={egg.name} className="w-full h-full object-cover"
-                onError={e => { e.target.parentNode.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1e293b;font-size:2.5rem">${egg.emoji}</div>`; }} />
-            </div>
+          {egg.multiPhoto ? (
+            // Layout khusus multi foto
             <div>
-              <div className="text-4xl animate-eggBounce mb-1">{egg.emoji}</div>
-              <p className="text-white font-black text-lg leading-tight">{egg.name}</p>
+              <div className="flex justify-center gap-3 mb-4">
+                {egg.multiPhoto.map((p, i) => (
+                  <div key={i} className="flex flex-col items-center gap-1.5">
+                    <div className={`w-20 h-20 rounded-2xl overflow-hidden border-2 ${egg.border} flex-shrink-0`}
+                      style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.6), 0 0 20px rgba(99,102,241,0.15)' }}>
+                      <img src={p.photo} alt={p.label} className="w-full h-full object-cover"
+                        onError={e => { e.target.parentNode.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1e293b;font-size:1.5rem">${egg.emoji}</div>`; }} />
+                    </div>
+                    <p className="text-[10px] text-slate-400 font-bold text-center leading-tight">{p.label}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="text-center">
+                <div className="text-2xl animate-eggBounce mb-1">{egg.emoji}</div>
+                <p className="text-white font-black text-base leading-tight">{egg.name}</p>
+              </div>
             </div>
-          </div>
+          ) : (
+            // Layout normal satu foto
+            <div className="flex items-center gap-5">
+              <div className={`relative w-20 h-20 rounded-2xl overflow-hidden border-2 ${egg.border} flex-shrink-0`}
+                style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.6), 0 0 20px rgba(99,102,241,0.15)' }}>
+                <img src={egg.photo} alt={egg.name} className="w-full h-full object-cover"
+                  onError={e => { e.target.parentNode.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1e293b;font-size:2rem">${egg.emoji}</div>`; }} />
+              </div>
+              <div>
+                <div className="text-3xl animate-eggBounce mb-1">{egg.emoji}</div>
+                <p className="text-white font-black text-base leading-tight">{egg.name}</p>
+                </div>
+            </div>
+          )}
+        </div>
 
-          {/* pesan */}
-          <div className={`rounded-2xl p-4 mb-5 bg-gradient-to-br ${egg.color} border ${egg.border}`}>
-            <p className="text-slate-100 text-sm leading-relaxed font-medium">{egg.message}</p>
+        {/* Pesan — scrollable */}
+        <div className="flex-1 overflow-y-auto px-7 pb-2" style={{scrollbarWidth:'thin', scrollbarColor:'rgba(99,102,241,0.3) transparent'}}>
+          <div className={`rounded-2xl p-4 bg-gradient-to-br ${egg.color} border ${egg.border}`}>
+            <p className="text-slate-100 text-sm leading-relaxed font-medium" style={{whiteSpace:'pre-line'}}>{displayMessage}</p>
           </div>
+        </div>
 
-          {/* progress bar */}
-          <div className="h-0.5 bg-white/5 rounded-full overflow-hidden">
-            <div className={`h-full rounded-full bg-gradient-to-r ${egg.color.replace('/30', '').replace('from-','from-').replace('to-','to-')} egg-progress`}
-              style={{ animationDuration: DURATION + 'ms' }} />
-          </div>
-          <p className="text-[10px] text-slate-700 mt-1 text-right">Tap di luar untuk tutup</p>
+        {/* Footer */}
+        <div className="flex-shrink-0 px-7 pb-6 pt-4">
+          <button onClick={onClose}
+            className={`w-full py-3 rounded-2xl text-sm font-black text-white transition-all duration-300 active:scale-95 bg-gradient-to-r ${egg.color.replace('/30','')}`}
+            style={{opacity:0.9}}>
+            {'Tutup 💌'}
+          </button>
         </div>
       </div>
     </div>
   );
 };
 
-// ── SHARED COMPONENTS ─────────────────────────────────────────────────────────
+
+// Shared Components
 const Particles = () => {
   const particles = Array.from({ length: 18 }, (_, i) => ({
     id: i, size: Math.random() * 6 + 2,
@@ -479,7 +501,7 @@ const Avatar = ({ img, name, size = "md" }) => {
   return <div className={`${dim} rounded-full bg-slate-800 border-2 border-white/10 ring-4 ring-blue-500/10 mx-auto flex-shrink-0 flex items-center justify-center`}>👤</div>;
 };
 
-// ── SPLASH ────────────────────────────────────────────────────────────────────
+// Splash Screen
 const SplashScreen = ({ onEnter }) => (
   <div className="fixed inset-0 z-[999] bg-[#020617] flex flex-col items-center justify-center overflow-hidden animate-fadeIn">
     <Particles />
@@ -504,7 +526,7 @@ const SplashScreen = ({ onEnter }) => (
   </div>
 );
 
-// ── LOADING ───────────────────────────────────────────────────────────────────
+// Loading Screen
 const LoadingScreen = ({ onDone }) => {
   const [phase, setPhase] = useState(0);
   useEffect(() => {
@@ -536,7 +558,7 @@ const LoadingScreen = ({ onDone }) => {
   );
 };
 
-// ── MAIN APP ──────────────────────────────────────────────────────────────────
+// Main App
 const AppInner = () => {
   const [stage, setStage]                 = useState('splash');
   const [activeSection, setActiveSection] = useState('home');
@@ -551,6 +573,11 @@ const AppInner = () => {
   const [searchQuery, setSearchQuery]     = useState('');
   const [activeEgg, setActiveEgg]         = useState(null);
   const [eggCooldown, setEggCooldown]     = useState(false);
+  const [showForm, setShowForm]           = useState(false);
+  const [formData, setFormData]           = useState({ nama: '', pesan: '', photo: null });
+  const [formStatus, setFormStatus]       = useState('idle'); // idle | loading | success | error
+  const [formCooldown, setFormCooldown]   = useState(false);
+  const [cooldownSecs, setCooldownSecs]   = useState(0);
 
   const introAudioRef  = useRef(new Audio('/lagu-intro.mp3'));
   const galeriAudioRef = useRef(new Audio('/lagu.mp3'));
@@ -558,7 +585,7 @@ const AppInner = () => {
   const navigate       = useNavigate();
   const location       = useLocation();
 
-  // ── Easter Egg checker ────────────────────────────────────────────
+  // Easter egg checker
   const checkEasterEgg = (query) => {
     if (eggCooldown || !query.trim()) return;
     const q = query.toLowerCase().trim();
@@ -577,9 +604,67 @@ const AppInner = () => {
     checkEasterEgg(val);
   };
 
-  // ── Filter helpers ────────────────────────────────────────────────
-  // Search bar di section Member HANYA filter pengurus & member biasa
-  // Wali kelas TIDAK ikut difilter (section terpisah di atas)
+  // Form submit handler
+  const IMGBB_KEY = '3b5d47875a882db1a573d355c26c9d67';
+  const GAS_URL   = 'https://script.google.com/macros/s/AKfycbypB_nYFo-Z1zRhORDXkrctzAhDBzsp0RifP3gwHljgtKNVAs4_xZzITsCVJ3J1PknLBQ/exec';
+
+  const handleFormSubmit = async () => {
+    if (formCooldown) return;
+    if (!formData.nama.trim()  || !formData.pesan.trim()) return;
+
+    setFormStatus('loading');
+    try {
+      let photoUrl  = '';
+      let photoName = '';
+
+      // Upload foto ke ImgBB kalau ada
+      if (formData.photo) {
+        const imgForm = new FormData();
+        imgForm.append('image', formData.photo);
+        const imgRes  = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
+          method: 'POST', body: imgForm,
+        });
+        const imgData = await imgRes.json();
+        if (imgData.success) {
+          photoUrl  = imgData.data.url;
+          photoName = formData.photo.name;
+        }
+      }
+
+      // Kirim ke Google Apps Script
+      await fetch(GAS_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nama:      formData.nama,
+          pesan:     formData.pesan,
+          photoUrl,
+          photoName,
+        }),
+      });
+
+      setFormStatus('success');
+      setFormData({ nama: '', pesan: '', photo: null });
+
+      // Cooldown 60 detik
+      setFormCooldown(true);
+      setCooldownSecs(60);
+      const interval = setInterval(() => {
+        setCooldownSecs(s => {
+          if (s <= 1) { clearInterval(interval); setFormCooldown(false); return 0; }
+          return s - 1;
+        });
+      }, 1000);
+
+      setTimeout(() => setFormStatus('idle'), 4000);
+    } catch {
+      setFormStatus('error');
+      setTimeout(() => setFormStatus('idle'), 3000);
+    }
+  };
+
+  // Filter helpers
   const filterBy = (list) => {
     if (!searchQuery.trim()) return list;
     return list.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -589,7 +674,7 @@ const AppInner = () => {
   const displayList      = activeTab === 'pengurus' ? filteredPengurus : filteredMember;
   const totalFound       = filteredPengurus.length + filteredMember.length;
 
-  // ── Enter & Loading ───────────────────────────────────────────────
+  // Enter & loading
   const handleEnter = () => {
     setStage('loading');
     const a = introAudioRef.current;
@@ -597,7 +682,7 @@ const AppInner = () => {
   };
   const handleLoadingDone = () => { setStage('main'); navigate('/'); };
 
-  // ── Music ─────────────────────────────────────────────────────────
+  // Music
   const toggleIntroMusic = () => {
     const a = introAudioRef.current;
     if (a.paused) { a.play().catch(() => {}); setIsIntroPaused(false); }
@@ -621,7 +706,7 @@ const AppInner = () => {
 
   useEffect(() => { galeriAudioRef.current.volume = isMuted ? 0 : 0.5; }, [isMuted]);
 
-  // ── Scroll spy ────────────────────────────────────────────────────
+  // Scroll spy
   useEffect(() => {
     if (stage !== 'main') return;
     const observer = new IntersectionObserver(entries => {
@@ -639,7 +724,7 @@ const AppInner = () => {
     return () => { clearTimeout(timer); observer.disconnect(); };
   }, [stage]);
 
-  // ── Reveal on scroll ──────────────────────────────────────────────
+  // Reveal on scroll
   useEffect(() => {
     if (stage !== 'main') return;
     const observer = new IntersectionObserver(
@@ -652,7 +737,7 @@ const AppInner = () => {
     return () => { clearTimeout(timer); observer.disconnect(); };
   }, [stage]);
 
-  // ── Scroll to section ─────────────────────────────────────────────
+  // Scroll to section
   const scrollToSection = (id) => {
     setIsMenuOpen(false);
     const found = sections.find(s => s.id === id);
@@ -675,7 +760,7 @@ const AppInner = () => {
     }
   }, [stage]);
 
-  // ── Scroll lock ───────────────────────────────────────────────────
+  // Scroll lock
   useEffect(() => {
     document.body.style.overflow =
       (stage !== 'main' || isGalleryOpen || lightboxIndex !== null || !!activeEgg) ? 'hidden' : '';
@@ -710,7 +795,7 @@ const AppInner = () => {
       {stage === 'loading' && <LoadingScreen onDone={handleLoadingDone} />}
 
       {/* Easter Egg Modal */}
-      {activeEgg && <EasterEggModal egg={activeEgg} onClose={() => setActiveEgg(null)} />}
+      {activeEgg && <EasterEggModal egg={activeEgg} onClose={() => { setActiveEgg(null); if (!isIntroPaused) introAudioRef.current.play().catch(()=>{}); }} introAudioRef={introAudioRef} />}
 
       {/* Lightbox */}
       {lightboxIndex !== null && (
@@ -907,14 +992,22 @@ const AppInner = () => {
           </div>
 
           {/* Tab */}
-          <div className="reveal flex justify-center mb-12 gap-2 p-1.5 bg-white/5 w-fit mx-auto rounded-full border border-white/10 backdrop-blur-md">
+          <div className="reveal flex justify-center mb-12 gap-2 p-1.5 bg-white/5 mx-auto rounded-full border border-white/10 backdrop-blur-md" style={{width:'fit-content'}}>
             <button onClick={() => setActiveTab('pengurus')}
-              className={`px-8 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${activeTab === 'pengurus' ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/40' : 'text-slate-400 hover:text-white'}`}>
-              Pengurus {searchQuery && <span className="text-xs opacity-70">({filteredPengurus.length})</span>}
+              className={`flex items-center justify-center gap-1.5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${activeTab === 'pengurus' ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/40' : 'text-slate-400 hover:text-white'}`}
+              style={{width:'140px'}}>
+              Pengurus
+              <span className={`text-xs font-normal bg-white/10 px-1.5 py-0.5 rounded-full transition-all duration-200 ${searchQuery ? 'opacity-60' : 'opacity-0'}`} style={{minWidth:'20px',textAlign:'center'}}>
+                {filteredPengurus.length}
+              </span>
             </button>
             <button onClick={() => setActiveTab('member')}
-              className={`px-8 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${activeTab === 'member' ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/40' : 'text-slate-400 hover:text-white'}`}>
-              Semua Member {searchQuery && <span className="text-xs opacity-70">({filteredMember.length})</span>}
+              className={`flex items-center justify-center gap-1.5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${activeTab === 'member' ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/40' : 'text-slate-400 hover:text-white'}`}
+              style={{width:'160px'}}>
+              Semua Member
+              <span className={`text-xs font-normal bg-white/10 px-1.5 py-0.5 rounded-full transition-all duration-200 ${searchQuery ? 'opacity-60' : 'opacity-0'}`} style={{minWidth:'20px',textAlign:'center'}}>
+                {filteredMember.length}
+              </span>
             </button>
           </div>
 
@@ -1000,6 +1093,113 @@ const AppInner = () => {
           </p>
         </footer>
       </div>
+
+      {/* Floating Button Kirim Pesan */}
+      {stage === 'main' && (
+        <button
+          onClick={() => setShowForm(f => !f)}
+          className="fixed bottom-6 right-6 z-[300] w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-500 text-white shadow-2xl shadow-blue-500/40 flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95"
+          style={{ boxShadow: '0 8px 30px rgba(59,130,246,0.5)' }}
+          title="Kirim Pesan">
+          {showForm ? <span className="text-xl">✕</span> : <span className="text-xl">✉️</span>}
+        </button>
+      )}
+
+      {/* Form Modal */}
+      {showForm && stage === 'main' && (
+        <div className="fixed bottom-24 right-6 z-[299] w-[calc(100vw-48px)] max-w-sm animate-eggSlideUp"
+          style={{
+            background: 'rgba(8,15,30,0.98)',
+            borderRadius: '24px',
+            border: '1px solid rgba(255,255,255,0.08)',
+            boxShadow: '0 30px 60px rgba(0,0,0,0.8)',
+          }}>
+
+          {/* Header form */}
+          <div className="px-6 pt-6 pb-4 border-b border-white/5">
+            <p className="text-white font-black text-base">✉️ Kirim Pesan</p>
+            <p className="text-slate-500 text-[11px] mt-0.5">Pesan kamu akan langsung diterima admin</p>
+          </div>
+
+          <div className="px-6 py-5 flex flex-col gap-3">
+            {/* Nama */}
+            <div>
+              <label className="text-[10px] text-slate-500 uppercase tracking-wider font-bold mb-1 block">Nama</label>
+              <input
+                type="text"
+                value={formData.nama}
+                onChange={e => setFormData(f => ({ ...f, nama: e.target.value }))}
+                placeholder="Nama kamu..."
+                maxLength={50}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 outline-none focus:border-blue-500/50 transition-all"
+              />
+            </div>
+
+
+            {/* Pesan */}
+            <div>
+              <label className="text-[10px] text-slate-500 uppercase tracking-wider font-bold mb-1 block">Pesan</label>
+              <textarea
+                value={formData.pesan}
+                onChange={e => setFormData(f => ({ ...f, pesan: e.target.value }))}
+                placeholder="Tulis pesanmu di sini..."
+                maxLength={500}
+                rows={3}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 outline-none focus:border-blue-500/50 transition-all resize-none"
+              />
+              <p className="text-[10px] text-slate-700 text-right mt-0.5">{formData.pesan.length}/500</p>
+            </div>
+
+            {/* Upload Foto */}
+            <div>
+              <label className="text-[10px] text-slate-500 uppercase tracking-wider font-bold mb-1 block">Foto (opsional)</label>
+              <label className="flex items-center gap-3 w-full bg-white/5 border border-white/10 hover:border-blue-500/40 rounded-xl px-4 py-2.5 cursor-pointer transition-all group">
+                <span className="text-lg">📎</span>
+                <span className="text-sm text-slate-500 group-hover:text-slate-300 transition-colors truncate flex-1">
+                  {formData.photo ? formData.photo.name : 'Pilih foto...'}
+                </span>
+                {formData.photo && (
+                  <button onClick={e => { e.preventDefault(); setFormData(f => ({ ...f, photo: null })); }}
+                    className="text-slate-600 hover:text-red-400 transition-colors text-xs">✕</button>
+                )}
+                <input type="file" accept="image/*" className="hidden"
+                  onChange={e => { if (e.target.files[0]) setFormData(f => ({ ...f, photo: e.target.files[0] })); }} />
+              </label>
+              {formData.photo && (
+                <p className="text-[10px] text-slate-600 mt-1">
+                  {(formData.photo.size / 1024 / 1024).toFixed(2)} MB
+                </p>
+              )}
+            </div>
+
+            {/* Status messages */}
+            {formStatus === 'success' && (
+              <div className="bg-green-500/10 border border-green-500/30 rounded-xl px-4 py-3 text-center animate-fadeUp">
+                <p className="text-green-400 text-sm font-bold">✅ Pesan terkirim!</p>
+                <p className="text-green-600 text-[11px] mt-0.5">Terima kasih sudah mengirim pesan 💙</p>
+              </div>
+            )}
+            {formStatus === 'error' && (
+              <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 text-center animate-fadeUp">
+                <p className="text-red-400 text-sm font-bold">❌ Gagal terkirim</p>
+                <p className="text-red-600 text-[11px] mt-0.5">Coba lagi beberapa saat</p>
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              onClick={handleFormSubmit}
+              disabled={formStatus === 'loading' || formCooldown || !formData.nama.trim()  || !formData.pesan.trim()}
+              className="w-full py-3 rounded-xl text-sm font-black text-white transition-all duration-300 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-cyan-500 shadow-lg shadow-blue-500/20">
+              {formStatus === 'loading'
+                ? '⏳ Mengirim...'
+                : formCooldown
+                  ? `⏱ Tunggu ${cooldownSecs}s`
+                  : '🚀 Kirim Pesan'}
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 };
