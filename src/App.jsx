@@ -145,7 +145,7 @@ const easterEggs = [
 
   // Wali Kelas
   {
-    triggers: ['widyanti', 'bu widya', 'widya'],
+    triggers: ['widyanti', 'bu widya', 'widya', 'wali kelas 7', 'walas 7'],
     name: 'A. Widyanti',
     photo: '/eggfoto3.webp',
     audio: '/eggsound3.mp3',
@@ -156,7 +156,7 @@ const easterEggs = [
     longMessage: true,
   },
   {
-    triggers: ['ana', 'bu ana', 'ana eka'],
+    triggers: ['ana', 'bu ana', 'ana eka', 'wali kelas 8', 'walas 8'],
     name: 'Ana Eka Rizky',
     photo: '/eggfoto4.webp',
     audio: '/eggsound4.mp3',
@@ -167,10 +167,10 @@ const easterEggs = [
     longMessage: true,
   },
   {
-    triggers: ['endang', 'bu endang', 'sustyaningsih'],
+    triggers: ['endang', 'bu endang', 'sustyaningsih', 'wali kelas 9', 'walas 9'],
     name: 'Endang Sustyaningsih S.P.',
-    photo: '/egg-endang.webp',
-    audio: '/eggsound.mp3',
+    photo: '/eggfoto5.webp',
+    audio: '/eggsound5.mp3',
     message: 'Kami tahu nasehat Ibu mungkin terasa setiap hari, tapi kami mengerti itu adalah cara Ibu menunjukkan kasih sayang agar kami tetap berada di jalan yang benar. Terima kasih telah menjaga kami.',
     emoji: '📖',
     color: 'from-rose-900/30 to-red-800/30',
