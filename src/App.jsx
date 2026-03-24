@@ -127,23 +127,7 @@ const globalStyles = `
   html { scroll-behavior: smooth; }
 `;
 
-/**
- * Easter Egg Config
- * Tambah atau edit entri di bawah sesukamu.
- *
- * triggers : array kata pemicu (case-insensitive)
- * photo    : path file foto di /public
- * audio    : path file audio di /public
- * message  : pesan yang ditampilkan
- * emoji    : emoji dekorasi
- * color    : gradient Tailwind, format: from-xxx/30 to-xxx/30
- * border   : border Tailwind, format: border-xxx/50
- * longMessage : true = tidak ada auto-close, ada tombol tutup
- * fullMessage : teks panjang yang bisa di-scroll (opsional)
- */
 const easterEggs = [
-
-  // Wali Kelas
   {
     triggers: ['widyanti', 'bu widya', 'widya', 'wali kelas 7', 'walas 7'],
     name: 'A. Widyanti',
@@ -177,7 +161,6 @@ const easterEggs = [
     border: 'border-rose-800/50',
     longMessage: true,
   },
-
   {
     triggers: ['safira iwan', 'iwan safira', 'fira iwan', 'iwan fira'],
     name: 'Iwan & Safira 🌙',
@@ -202,8 +185,6 @@ Be happy iwan 🌙.`,
     border: 'border-indigo-500/50',
     longMessage: true,
   },
-
-  // Tiga Pilar
   {
     triggers: ['3 pilar', 'tiga pilar', '3pilar', 'wali kelas'],
     name: 'Tiga Pilar Kelas 9A 🌟',
@@ -229,8 +210,6 @@ Ibu bertiga adalah pilar yang membuat kami kuat. Terima kasih telah selalu berad
     border: 'border-blue-500/50',
     longMessage: true,
   },
-
-  // Kata Rahasia Kelas
   {
     triggers: ['attractive', '9a', 'class attractive', '9 a'],
     name: 'Class Attractive 9A',
@@ -244,7 +223,6 @@ Ibu bertiga adalah pilar yang membuat kami kuat. Terima kasih telah selalu berad
   },
 ];
 
-// Data
 const waliKelas = [
   { grade: "Wali Kelas 7", name: "A. Widyanti",               img: "/bu-widya.webp",  quote: "Guru Bahasa Inggris" },
   { grade: "Wali Kelas 8", name: "Ana Eka Rizky",              img: "/bu-ana.webp",    quote: "Guru Prakarya." },
@@ -327,7 +305,6 @@ const navItems = [
   { label: 'Galeri',     id: 'galeri'    },
 ];
 
-// Confetti
 const spawnConfetti = () => {
   const colors = ['#3b82f6','#8b5cf6','#06b6d4','#f59e0b','#10b981','#ef4444','#ec4899','#fff'];
   for (let i = 0; i < 70; i++) {
@@ -346,37 +323,61 @@ const spawnConfetti = () => {
   }
 };
 
-// Easter Egg Modal
+// ─── Easter Egg Modal ───────────────────────────────────────────────────────
 const EasterEggModal = ({ egg, onClose, introAudioRef }) => {
   const audioRef = useRef(null);
-  const DURATION = egg.longMessage ? 0 : 8000;
 
   useEffect(() => {
     spawnConfetti();
-    // Pause background music
     if (introAudioRef && introAudioRef.current) introAudioRef.current.pause();
     if (egg.audio) {
       audioRef.current = new Audio(egg.audio);
       audioRef.current.volume = 0.6;
       audioRef.current.play().catch(() => {});
     }
+
+    // Matikan audio egg saat tab disembunyikan atau ditutup
+    const stopEggAudio = () => {
+      if (audioRef.current) { audioRef.current.pause(); }
+    };
+    const onVisibility = () => {
+      if (document.hidden) stopEggAudio();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    window.addEventListener('pagehide', stopEggAudio);
+
     if (!egg.longMessage) {
-      const t = setTimeout(onClose, DURATION);
+      const t = setTimeout(onClose, 8000);
       return () => {
         clearTimeout(t);
         if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
+        document.removeEventListener('visibilitychange', onVisibility);
+        window.removeEventListener('pagehide', stopEggAudio);
       };
     }
     return () => {
       if (audioRef.current) { audioRef.current.pause(); audioRef.current = null; }
+      document.removeEventListener('visibilitychange', onVisibility);
+      window.removeEventListener('pagehide', stopEggAudio);
     };
   }, []);
 
   const displayMessage = egg.fullMessage || egg.message;
 
+  // FIX: gunakan string concatenation, bukan template literal di className JSX
+  const multiPhotoImgClass = "w-20 h-20 rounded-2xl overflow-hidden border-2 " + egg.border + " flex-shrink-0";
+  const singlePhotoImgClass = "relative w-20 h-20 rounded-2xl overflow-hidden border-2 " + egg.border + " flex-shrink-0";
+  const closeGradientClass = "w-full py-3 rounded-2xl text-sm font-black text-white transition-all duration-300 active:scale-95 bg-gradient-to-r " + egg.color.replace('/30','');
+  const msgBgClass = "rounded-2xl p-4 bg-gradient-to-br " + egg.color + " border " + egg.border;
+
+  // FIX: gunakan string biasa untuk innerHTML
+  const fallbackHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1e293b;font-size:1.5rem">' + egg.emoji + '</div>';
+
   return (
-    <div className="fixed inset-0 z-[500] flex items-end md:items-center justify-center p-4 md:p-6 animate-fadeIn"
-      onClick={onClose}>
+    <div
+      className="fixed inset-0 z-[500] flex items-center justify-center p-4 md:p-6 animate-fadeIn"
+      onClick={onClose}
+    >
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
 
       <div
@@ -389,15 +390,15 @@ const EasterEggModal = ({ egg, onClose, introAudioRef }) => {
           boxShadow: '0 30px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.04)',
           maxWidth: '480px',
           maxHeight: '88vh',
-        }}>
-
-
-
+        }}
+      >
         {/* close */}
-        <button onClick={onClose}
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/8 hover:bg-white/15 flex items-center justify-center text-slate-500 hover:text-white transition-all z-10 text-sm">✕</button>
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/8 hover:bg-white/15 flex items-center justify-center text-slate-500 hover:text-white transition-all z-10 text-sm"
+        >✕</button>
 
-        {/* Header tetap di atas */}
+        {/* Header */}
         <div className="flex-shrink-0 px-7 pt-7 pb-4">
           <div className="flex items-center gap-2 mb-5">
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full">
@@ -406,15 +407,20 @@ const EasterEggModal = ({ egg, onClose, introAudioRef }) => {
           </div>
 
           {egg.multiPhoto ? (
-            // Layout khusus multi foto
             <div>
               <div className="flex justify-center gap-3 mb-4">
                 {egg.multiPhoto.map((p, i) => (
                   <div key={i} className="flex flex-col items-center gap-1.5">
-                    <div className={`w-20 h-20 rounded-2xl overflow-hidden border-2 ${egg.border} flex-shrink-0`}
-                      style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.6), 0 0 20px rgba(99,102,241,0.15)' }}>
-                      <img src={p.photo} alt={p.label} className="w-full h-full object-cover"
-                        onError={e => { e.target.parentNode.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1e293b;font-size:1.5rem">${egg.emoji}</div>`; }} />
+                    <div
+                      className={multiPhotoImgClass}
+                      style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.6), 0 0 20px rgba(99,102,241,0.15)' }}
+                    >
+                      <img
+                        src={p.photo}
+                        alt={p.label}
+                        className="w-full h-full object-cover"
+                        onError={e => { e.target.parentNode.innerHTML = fallbackHTML; }}
+                      />
                     </div>
                     <p className="text-[10px] text-slate-400 font-bold text-center leading-tight">{p.label}</p>
                   </div>
@@ -426,34 +432,47 @@ const EasterEggModal = ({ egg, onClose, introAudioRef }) => {
               </div>
             </div>
           ) : (
-            // Layout normal satu foto
             <div className="flex items-center gap-5">
-              <div className={`relative w-20 h-20 rounded-2xl overflow-hidden border-2 ${egg.border} flex-shrink-0`}
-                style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.6), 0 0 20px rgba(99,102,241,0.15)' }}>
-                <img src={egg.photo} alt={egg.name} className="w-full h-full object-cover"
-                  onError={e => { e.target.parentNode.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1e293b;font-size:2rem">${egg.emoji}</div>`; }} />
+              <div
+                className={singlePhotoImgClass}
+                style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.6), 0 0 20px rgba(99,102,241,0.15)' }}
+              >
+                <img
+                  src={egg.photo}
+                  alt={egg.name}
+                  className="w-full h-full object-cover"
+                  onError={e => { e.target.parentNode.innerHTML = fallbackHTML; }}
+                />
               </div>
               <div>
                 <div className="text-3xl animate-eggBounce mb-1">{egg.emoji}</div>
                 <p className="text-white font-black text-base leading-tight">{egg.name}</p>
-                </div>
+              </div>
             </div>
           )}
         </div>
 
         {/* Pesan — scrollable */}
-        <div className="flex-1 overflow-y-auto px-7 pb-2" style={{scrollbarWidth:'thin', scrollbarColor:'rgba(99,102,241,0.3) transparent'}}>
-          <div className={`rounded-2xl p-4 bg-gradient-to-br ${egg.color} border ${egg.border}`}>
-            <p className="text-slate-100 text-sm leading-relaxed font-medium" style={{whiteSpace:'pre-line'}}>{displayMessage}</p>
+        <div
+          className="flex-1 overflow-y-auto px-7 pb-2"
+          style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(99,102,241,0.3) transparent' }}
+        >
+          <div className={msgBgClass}>
+            <p
+              className="text-slate-100 text-sm leading-relaxed font-medium"
+              style={{ whiteSpace: 'pre-line' }}
+            >{displayMessage}</p>
           </div>
         </div>
 
         {/* Footer */}
         <div className="flex-shrink-0 px-7 pb-6 pt-4">
-          <button onClick={onClose}
-            className={`w-full py-3 rounded-2xl text-sm font-black text-white transition-all duration-300 active:scale-95 bg-gradient-to-r ${egg.color.replace('/30','')}`}
-            style={{opacity:0.9}}>
-            {'Tutup 💌'}
+          <button
+            onClick={onClose}
+            className={closeGradientClass}
+            style={{ opacity: 0.9 }}
+          >
+            Tutup 💌
           </button>
         </div>
       </div>
@@ -461,8 +480,7 @@ const EasterEggModal = ({ egg, onClose, introAudioRef }) => {
   );
 };
 
-
-// Shared Components
+// ─── Shared Components ───────────────────────────────────────────────────────
 const Particles = () => {
   const particles = Array.from({ length: 18 }, (_, i) => ({
     id: i, size: Math.random() * 6 + 2,
@@ -474,9 +492,9 @@ const Particles = () => {
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {particles.map(p => (
         <div key={p.id} className="particle" style={{
-          width: p.size, height: p.size, left: `${p.x}%`, top: `${p.y}%`,
+          width: p.size, height: p.size, left: p.x + '%', top: p.y + '%',
           background: p.color, opacity: 0.3, animationName: 'float',
-          animationDuration: `${p.duration}s`, animationDelay: `${p.delay}s`,
+          animationDuration: p.duration + 's', animationDelay: p.delay + 's',
           animationTimingFunction: 'ease-in-out', animationIterationCount: 'infinite',
         }} />
       ))}
@@ -486,47 +504,59 @@ const Particles = () => {
 
 const MusicBars = () => (
   <div className="flex items-end gap-0.5 h-4">
-    {[1,2,3,4,5].map(i => <div key={i} className="wave-bar w-1 bg-blue-400 rounded-full origin-bottom" style={{ height: '100%' }} />)}
+    {[1,2,3,4,5].map(i => (
+      <div key={i} className="wave-bar w-1 bg-blue-400 rounded-full origin-bottom" style={{ height: '100%' }} />
+    ))}
   </div>
 );
 
 const Avatar = ({ img, name, size = "md" }) => {
   const dim = size === "lg" ? "w-24 h-24" : "w-14 h-14";
   if (img) return (
-    <div className={`${dim} rounded-full overflow-hidden border-2 border-white/10 ring-4 ring-blue-500/10 mx-auto flex-shrink-0`}>
-      <img src={img} alt={name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500"
-        onError={e => { e.target.style.display='none'; e.target.parentNode.innerHTML='👤'; }} />
+    <div className={dim + " rounded-full overflow-hidden border-2 border-white/10 ring-4 ring-blue-500/10 mx-auto flex-shrink-0"}>
+      <img
+        src={img}
+        alt={name}
+        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-500"
+        onError={e => { e.target.style.display = 'none'; e.target.parentNode.innerHTML = '👤'; }}
+      />
     </div>
   );
-  return <div className={`${dim} rounded-full bg-slate-800 border-2 border-white/10 ring-4 ring-blue-500/10 mx-auto flex-shrink-0 flex items-center justify-center`}>👤</div>;
+  return (
+    <div className={dim + " rounded-full bg-slate-800 border-2 border-white/10 ring-4 ring-blue-500/10 mx-auto flex-shrink-0 flex items-center justify-center"}>
+      👤
+    </div>
+  );
 };
 
-// Splash Screen
+// ─── Splash Screen ───────────────────────────────────────────────────────────
 const SplashScreen = ({ onEnter }) => (
   <div className="fixed inset-0 z-[999] bg-[#020617] flex flex-col items-center justify-center overflow-hidden animate-fadeIn">
     <Particles />
     <div className="relative z-10 flex flex-col items-center text-center px-6">
       <div className="relative mb-8">
         <div className="absolute inset-0 rounded-full border border-blue-500/20 animate-spin-slow scale-150" />
-        <div className="absolute inset-0 rounded-full border border-cyan-500/10 animate-spin-slow scale-[1.8]" style={{ animationDirection:'reverse', animationDuration:'14s' }} />
+        <div className="absolute inset-0 rounded-full border border-cyan-500/10 animate-spin-slow scale-[1.8]" style={{ animationDirection: 'reverse', animationDuration: '14s' }} />
         <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-blue-500/40 animate-glowPulse">
           <img src="/logo-9a.webp" alt="Logo" className="w-full h-full object-cover" />
         </div>
       </div>
-      <p className="text-[11px] text-blue-400 font-bold tracking-[0.5em] uppercase mb-3 animate-fadeUp" style={{ animationDelay:'0.2s', opacity:0 }}>Welcome to</p>
-      <h1 className="text-5xl md:text-6xl font-black text-shimmer tracking-tighter mb-2 animate-fadeUp" style={{ animationDelay:'0.35s', opacity:0 }}>Class Attractive</h1>
-      <p className="text-slate-500 text-sm italic mb-12 animate-fadeUp" style={{ animationDelay:'0.5s', opacity:0 }}>Memories Stay Forever.</p>
-      <button onClick={onEnter}
+      <p className="text-[11px] text-blue-400 font-bold tracking-[0.5em] uppercase mb-3 animate-fadeUp" style={{ animationDelay: '0.2s', opacity: 0 }}>Welcome to</p>
+      <h1 className="text-5xl md:text-6xl font-black text-shimmer tracking-tighter mb-2 animate-fadeUp" style={{ animationDelay: '0.35s', opacity: 0 }}>Class Attractive</h1>
+      <p className="text-slate-500 text-sm italic mb-12 animate-fadeUp" style={{ animationDelay: '0.5s', opacity: 0 }}>Memories Stay Forever.</p>
+      <button
+        onClick={onEnter}
         className="ripple-btn animate-fadeUp group relative px-10 py-4 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-black tracking-widest text-sm uppercase transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/40"
-        style={{ animationDelay:'0.7s', opacity:0 }}>
+        style={{ animationDelay: '0.7s', opacity: 0 }}
+      >
         <span className="relative z-10 flex items-center gap-2">✨ Masuk</span>
       </button>
-      <p className="mt-6 text-[10px] text-slate-600 animate-textBlink animate-fadeUp" style={{ animationDelay:'1s', opacity:0 }}>Klik untuk mulai</p>
+      <p className="mt-6 text-[10px] text-slate-600 animate-textBlink animate-fadeUp" style={{ animationDelay: '1s', opacity: 0 }}>Klik untuk mulai</p>
     </div>
   </div>
 );
 
-// Loading Screen
+// ─── Loading Screen ──────────────────────────────────────────────────────────
 const LoadingScreen = ({ onDone }) => {
   const [phase, setPhase] = useState(0);
   useEffect(() => {
@@ -536,29 +566,31 @@ const LoadingScreen = ({ onDone }) => {
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, []);
   return (
-    <div className={`fixed inset-0 z-[998] bg-[#020617] flex flex-col items-center justify-center transition-opacity duration-700 ${phase === 2 ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+    <div className={"fixed inset-0 z-[998] bg-[#020617] flex flex-col items-center justify-center transition-opacity duration-700 " + (phase === 2 ? 'opacity-0 pointer-events-none' : 'opacity-100')}>
       <div className="relative flex items-center justify-center mb-8">
         <div className="absolute w-32 h-32 rounded-full border border-blue-500/30 animate-spin-slow" />
-        <div className="absolute w-44 h-44 rounded-full border border-blue-500/10 animate-spin-slow" style={{ animationDirection:'reverse', animationDuration:'12s' }} />
-        <div className="absolute w-24 h-24 rounded-full bg-blue-500/20" style={{ animation:'pulse-ring 1.5s ease-out infinite' }} />
-        <div className={`w-20 h-20 rounded-full overflow-hidden border-2 border-blue-500/50 animate-glowPulse transition-all duration-700 ${phase >= 0 ? 'animate-scaleIn' : 'opacity-0'}`}>
+        <div className="absolute w-44 h-44 rounded-full border border-blue-500/10 animate-spin-slow" style={{ animationDirection: 'reverse', animationDuration: '12s' }} />
+        <div className="absolute w-24 h-24 rounded-full bg-blue-500/20" style={{ animation: 'pulse-ring 1.5s ease-out infinite' }} />
+        <div className={"w-20 h-20 rounded-full overflow-hidden border-2 border-blue-500/50 animate-glowPulse transition-all duration-700 " + (phase >= 0 ? 'animate-scaleIn' : 'opacity-0')}>
           <img src="/logo-9a.webp" alt="Logo" className="w-full h-full object-cover" />
         </div>
       </div>
-      <div className={`text-center transition-all duration-700 ${phase >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      <div className={"text-center transition-all duration-700 " + (phase >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4')}>
         <p className="text-[11px] text-blue-400 font-bold tracking-[0.4em] uppercase mb-3">Loading</p>
         <h1 className="text-4xl md:text-5xl font-black text-shimmer tracking-tighter mb-2">Class Attractive</h1>
         <p className="text-slate-500 text-sm italic">Memories Stay Forever.</p>
       </div>
       <div className="mt-10 w-48 h-0.5 bg-white/5 rounded-full overflow-hidden">
-        <div className="h-full bg-gradient-to-r from-blue-600 to-cyan-400 rounded-full"
-          style={{ width: phase >= 1 ? '100%' : '0%', transition: 'width 1.8s ease' }} />
+        <div
+          className="h-full bg-gradient-to-r from-blue-600 to-cyan-400 rounded-full"
+          style={{ width: phase >= 1 ? '100%' : '0%', transition: 'width 1.8s ease' }}
+        />
       </div>
     </div>
   );
 };
 
-// Main App
+// ─── Main App ────────────────────────────────────────────────────────────────
 const AppInner = () => {
   const [stage, setStage]                 = useState('splash');
   const [activeSection, setActiveSection] = useState('home');
@@ -575,7 +607,7 @@ const AppInner = () => {
   const [eggCooldown, setEggCooldown]     = useState(false);
   const [showForm, setShowForm]           = useState(false);
   const [formData, setFormData]           = useState({ nama: '', pesan: '', photo: null });
-  const [formStatus, setFormStatus]       = useState('idle'); // idle | loading | success | error
+  const [formStatus, setFormStatus]       = useState('idle');
   const [formCooldown, setFormCooldown]   = useState(false);
   const [cooldownSecs, setCooldownSecs]   = useState(0);
 
@@ -585,7 +617,6 @@ const AppInner = () => {
   const navigate       = useNavigate();
   const location       = useLocation();
 
-  // Easter egg checker
   const checkEasterEgg = (query) => {
     if (eggCooldown || !query.trim()) return;
     const q = query.toLowerCase().trim();
@@ -604,24 +635,22 @@ const AppInner = () => {
     checkEasterEgg(val);
   };
 
-  // Form submit handler
   const IMGBB_KEY = '3b5d47875a882db1a573d355c26c9d67';
   const GAS_URL   = 'https://script.google.com/macros/s/AKfycbypB_nYFo-Z1zRhORDXkrctzAhDBzsp0RifP3gwHljgtKNVAs4_xZzITsCVJ3J1PknLBQ/exec';
 
   const handleFormSubmit = async () => {
     if (formCooldown) return;
-    if (!formData.nama.trim()  || !formData.pesan.trim()) return;
+    if (!formData.nama.trim() || !formData.pesan.trim()) return;
 
     setFormStatus('loading');
     try {
       let photoUrl  = '';
       let photoName = '';
 
-      // Upload foto ke ImgBB kalau ada
       if (formData.photo) {
         const imgForm = new FormData();
         imgForm.append('image', formData.photo);
-        const imgRes  = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
+        const imgRes  = await fetch('https://api.imgbb.com/1/upload?key=' + IMGBB_KEY, {
           method: 'POST', body: imgForm,
         });
         const imgData = await imgRes.json();
@@ -631,23 +660,16 @@ const AppInner = () => {
         }
       }
 
-      // Kirim ke Google Apps Script
       await fetch(GAS_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nama:      formData.nama,
-          pesan:     formData.pesan,
-          photoUrl,
-          photoName,
-        }),
+        body: JSON.stringify({ nama: formData.nama, pesan: formData.pesan, photoUrl, photoName }),
       });
 
       setFormStatus('success');
       setFormData({ nama: '', pesan: '', photo: null });
 
-      // Cooldown 60 detik
       setFormCooldown(true);
       setCooldownSecs(60);
       const interval = setInterval(() => {
@@ -664,7 +686,6 @@ const AppInner = () => {
     }
   };
 
-  // Filter helpers
   const filterBy = (list) => {
     if (!searchQuery.trim()) return list;
     return list.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -674,7 +695,6 @@ const AppInner = () => {
   const displayList      = activeTab === 'pengurus' ? filteredPengurus : filteredMember;
   const totalFound       = filteredPengurus.length + filteredMember.length;
 
-  // Enter & loading
   const handleEnter = () => {
     setStage('loading');
     const a = introAudioRef.current;
@@ -682,7 +702,6 @@ const AppInner = () => {
   };
   const handleLoadingDone = () => { setStage('main'); navigate('/'); };
 
-  // Music
   const toggleIntroMusic = () => {
     const a = introAudioRef.current;
     if (a.paused) { a.play().catch(() => {}); setIsIntroPaused(false); }
@@ -706,7 +725,22 @@ const AppInner = () => {
 
   useEffect(() => { galeriAudioRef.current.volume = isMuted ? 0 : 0.5; }, [isMuted]);
 
-  // Scroll spy
+  useEffect(() => {
+    const onVisibility = () => {
+      if (document.hidden) {
+        introAudioRef.current.pause();
+        galeriAudioRef.current.pause();
+      } else {
+        if (!isIntroPaused && stage === 'main' && !isGalleryOpen)
+          introAudioRef.current.play().catch(() => {});
+        if (isGalleryOpen && !isMuted)
+          galeriAudioRef.current.play().catch(() => {});
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, [isIntroPaused, stage, isGalleryOpen, isMuted]);
+
   useEffect(() => {
     if (stage !== 'main') return;
     const observer = new IntersectionObserver(entries => {
@@ -724,7 +758,6 @@ const AppInner = () => {
     return () => { clearTimeout(timer); observer.disconnect(); };
   }, [stage]);
 
-  // Reveal on scroll
   useEffect(() => {
     if (stage !== 'main') return;
     const observer = new IntersectionObserver(
@@ -737,7 +770,6 @@ const AppInner = () => {
     return () => { clearTimeout(timer); observer.disconnect(); };
   }, [stage]);
 
-  // Scroll to section
   const scrollToSection = (id) => {
     setIsMenuOpen(false);
     const found = sections.find(s => s.id === id);
@@ -760,7 +792,6 @@ const AppInner = () => {
     }
   }, [stage]);
 
-  // Scroll lock
   useEffect(() => {
     document.body.style.overflow =
       (stage !== 'main' || isGalleryOpen || lightboxIndex !== null || !!activeEgg) ? 'hidden' : '';
@@ -769,6 +800,7 @@ const AppInner = () => {
 
   const prevPhoto = () => setLightboxIndex(i => (i - 1 + galeri.length) % galeri.length);
   const nextPhoto = () => setLightboxIndex(i => (i + 1) % galeri.length);
+
   useEffect(() => {
     const h = e => {
       if (lightboxIndex === null) return;
@@ -795,19 +827,32 @@ const AppInner = () => {
       {stage === 'loading' && <LoadingScreen onDone={handleLoadingDone} />}
 
       {/* Easter Egg Modal */}
-      {activeEgg && <EasterEggModal egg={activeEgg} onClose={() => { setActiveEgg(null); if (!isIntroPaused) introAudioRef.current.play().catch(()=>{}); }} introAudioRef={introAudioRef} />}
+      {activeEgg && (
+        <EasterEggModal
+          egg={activeEgg}
+          onClose={() => {
+            setActiveEgg(null);
+            if (!isIntroPaused) introAudioRef.current.play().catch(() => {});
+          }}
+          introAudioRef={introAudioRef}
+        />
+      )}
 
       {/* Lightbox */}
       {lightboxIndex !== null && (
-        <div className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 animate-fadeIn"
-          onClick={() => setLightboxIndex(null)}>
+        <div
+          className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 animate-fadeIn"
+          onClick={() => setLightboxIndex(null)}
+        >
           <div className="relative max-w-4xl w-full animate-scaleIn" onClick={e => e.stopPropagation()}>
             <button onClick={() => setLightboxIndex(null)} className="absolute -top-12 right-0 text-slate-400 hover:text-white text-3xl font-light z-10">✕</button>
             <p className="absolute -top-12 left-0 text-slate-400 text-sm">{lightboxIndex + 1} / {galeri.length}</p>
             <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-blue-500/10">
               <img src={galeri[lightboxIndex].src} alt={galeri[lightboxIndex].caption} className="w-full max-h-[75vh] object-contain bg-slate-900" />
             </div>
-            {galeri[lightboxIndex].caption && <p className="text-center text-slate-300 mt-4 text-sm font-medium">{galeri[lightboxIndex].caption}</p>}
+            {galeri[lightboxIndex].caption && (
+              <p className="text-center text-slate-300 mt-4 text-sm font-medium">{galeri[lightboxIndex].caption}</p>
+            )}
             <button onClick={prevPhoto} className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-14 w-10 h-10 rounded-full bg-white/10 hover:bg-blue-500/30 border border-white/10 flex items-center justify-center text-white transition-all hover:scale-110 text-xl">‹</button>
             <button onClick={nextPhoto} className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-14 w-10 h-10 rounded-full bg-white/10 hover:bg-blue-500/30 border border-white/10 flex items-center justify-center text-white transition-all hover:scale-110 text-xl">›</button>
           </div>
@@ -820,8 +865,14 @@ const AppInner = () => {
           <div className="sticky top-0 z-10 bg-[#020617]/90 backdrop-blur-xl border-b border-white/10 px-6 py-4 flex items-center justify-between animate-slideDown">
             <div className="flex items-center gap-3">
               <h2 className="text-xl font-black tracking-tight text-white">📸 Galeri Kenangan</h2>
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 cursor-pointer" onClick={() => setIsMuted(m => !m)}>
-                {isMuted ? <span className="text-xs text-slate-400 font-bold">🔇 Muted</span> : <><MusicBars /><span className="text-[10px] text-blue-400 font-bold tracking-wide ml-1">Now Playing</span></>}
+              <div
+                className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 cursor-pointer"
+                onClick={() => setIsMuted(m => !m)}
+              >
+                {isMuted
+                  ? <span className="text-xs text-slate-400 font-bold">🔇 Muted</span>
+                  : <><MusicBars /><span className="text-[10px] text-blue-400 font-bold tracking-wide ml-1">Now Playing</span></>
+                }
               </div>
             </div>
             <button onClick={() => setIsGalleryOpen(false)} className="w-9 h-9 rounded-full bg-white/10 hover:bg-red-500/20 border border-white/10 flex items-center justify-center text-white transition-all hover:scale-110 text-lg">✕</button>
@@ -829,14 +880,17 @@ const AppInner = () => {
           <div className="flex-1 p-6">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
               {galeri.map((foto, i) => (
-                <div key={i} onClick={() => setLightboxIndex(i)}
+                <div
+                  key={i}
+                  onClick={() => setLightboxIndex(i)}
                   className="gallery-card group relative aspect-square rounded-2xl overflow-hidden border border-white/10 cursor-pointer hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/20"
-                  style={{ animation:`scaleIn 0.5s ease forwards`, animationDelay:`${i*0.05}s`, opacity:0 }}>
+                  style={{ animation: 'scaleIn 0.5s ease forwards', animationDelay: (i * 0.05) + 's', opacity: 0 }}
+                >
                   <img src={foto.src} alt={foto.caption} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-start justify-end p-3">
                     {foto.caption && <p className="text-white text-xs font-semibold leading-tight">{foto.caption}</p>}
                   </div>
-                  <div className="absolute top-2 left-2 w-6 h-6 rounded-full bg-black/50 flex items-center justify-center text-[10px] text-white font-bold opacity-0 group-hover:opacity-100 transition-opacity">{i+1}</div>
+                  <div className="absolute top-2 left-2 w-6 h-6 rounded-full bg-black/50 flex items-center justify-center text-[10px] text-white font-bold opacity-0 group-hover:opacity-100 transition-opacity">{i + 1}</div>
                   <div className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-sm border border-white/10">🔍</div>
                 </div>
               ))}
@@ -846,16 +900,19 @@ const AppInner = () => {
       )}
 
       {/* Mobile Menu */}
-      <div className={`fixed inset-0 z-[90] bg-[#020617]/98 backdrop-blur-2xl transition-all duration-500 md:hidden flex flex-col items-center justify-center gap-8 text-3xl font-black ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+      <div className={"fixed inset-0 z-[90] bg-[#020617]/98 backdrop-blur-2xl transition-all duration-500 md:hidden flex flex-col items-center justify-center gap-8 text-3xl font-black " + (isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none')}>
         {navItems.map(item => (
-          <button key={item.id} onClick={() => scrollToSection(item.id)}
-            className={`hover:text-blue-500 transition-colors ${activeSection === item.id ? 'text-blue-400' : ''}`}>
+          <button
+            key={item.id}
+            onClick={() => scrollToSection(item.id)}
+            className={"hover:text-blue-500 transition-colors " + (activeSection === item.id ? 'text-blue-400' : '')}
+          >
             {item.label}
           </button>
         ))}
       </div>
 
-      <div className={`min-h-screen bg-[#020617] text-slate-200 pb-20 font-sans selection:bg-blue-500/30 ${stage !== 'main' ? 'hidden' : ''}`}>
+      <div className={"min-h-screen bg-[#020617] text-slate-200 pb-20 font-sans selection:bg-blue-500/30 " + (stage !== 'main' ? 'hidden' : '')}>
 
         {/* Navbar */}
         <nav className="fixed top-0 left-0 right-0 z-[100] backdrop-blur-xl border-b border-white/5 py-4 px-6">
@@ -868,21 +925,30 @@ const AppInner = () => {
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">Class Attractive</span>
               </button>
               <div className="relative ml-1" data-player>
-                <button onClick={() => setShowPlayer(p => !p)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-blue-500/40 transition-all duration-300">
+                <button
+                  onClick={() => setShowPlayer(p => !p)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-blue-500/40 transition-all duration-300"
+                >
                   {isIntroPaused
                     ? <span className="text-slate-500 text-xs">🔇</span>
-                    : <div className="flex items-end gap-[2px] h-3">{[1,2,3].map(i=><div key={i} className="wave-bar w-[3px] bg-blue-400 rounded-full origin-bottom" style={{height:'100%'}}/>)}</div>}
+                    : <div className="flex items-end gap-[2px] h-3">{[1,2,3].map(i => <div key={i} className="wave-bar w-[3px] bg-blue-400 rounded-full origin-bottom" style={{ height: '100%' }} />)}</div>
+                  }
                   <span className="text-[10px] text-slate-400 font-normal hidden sm:block">{isIntroPaused ? 'Paused' : 'Playing'}</span>
                 </button>
                 {showPlayer && (
                   <div className="absolute top-full left-0 mt-2 w-64 bg-[#0f172a]/98 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-2xl shadow-black/50 z-50 animate-scaleIn max-sm:fixed max-sm:left-3 max-sm:right-3 max-sm:w-auto max-sm:top-[72px]">
                     <div className="flex items-center gap-2 mb-4">
-                      <div className="flex items-end gap-[2px] h-3">{[1,2,3].map(i=><div key={i} className={`w-[3px] rounded-full origin-bottom ${isIntroPaused?'bg-slate-600':'wave-bar bg-blue-400'}`} style={{height:'100%'}}/>)}</div>
+                      <div className="flex items-end gap-[2px] h-3">
+                        {[1,2,3].map(i => (
+                          <div key={i} className={"w-[3px] rounded-full origin-bottom " + (isIntroPaused ? 'bg-slate-600' : 'wave-bar bg-blue-400')} style={{ height: '100%' }} />
+                        ))}
+                      </div>
                       <p className="text-[11px] text-slate-400 uppercase tracking-widest font-bold">Background Music</p>
                     </div>
-                    <button onClick={toggleIntroMusic}
-                      className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-black text-sm transition-all duration-300 mb-4 active:scale-95 ${isIntroPaused?'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/30':'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'}`}>
+                    <button
+                      onClick={toggleIntroMusic}
+                      className={"w-full flex items-center justify-center gap-2 py-3 rounded-xl font-black text-sm transition-all duration-300 mb-4 active:scale-95 " + (isIntroPaused ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/30' : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10')}
+                    >
                       {isIntroPaused ? '▶  Play' : '⏸  Pause'}
                     </button>
                     <div className="flex justify-between items-center mb-2">
@@ -891,9 +957,11 @@ const AppInner = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="text-sm">🔈</span>
-                      <input type="range" min="0" max="1" step="0.05" value={introVolume}
+                      <input
+                        type="range" min="0" max="1" step="0.05" value={introVolume}
                         onChange={e => handleIntroVolume(parseFloat(e.target.value))}
-                        className="flex-1 h-2 rounded-full appearance-none bg-white/10 cursor-pointer accent-blue-500" />
+                        className="flex-1 h-2 rounded-full appearance-none bg-white/10 cursor-pointer accent-blue-500"
+                      />
                       <span className="text-sm">🔊</span>
                     </div>
                   </div>
@@ -902,17 +970,20 @@ const AppInner = () => {
             </div>
             <div className="hidden md:flex gap-8 items-center">
               {navItems.map(item => (
-                <button key={item.id} onClick={() => scrollToSection(item.id)}
-                  className={`text-sm transition-all hover:scale-105 relative group ${activeSection === item.id ? 'text-white' : 'text-slate-400 hover:text-white'}`}>
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={"text-sm transition-all hover:scale-105 relative group " + (activeSection === item.id ? 'text-white' : 'text-slate-400 hover:text-white')}
+                >
                   {item.label}
-                  <span className={`absolute -bottom-1 left-0 h-px bg-blue-500 transition-all duration-300 ${activeSection === item.id ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+                  <span className={"absolute -bottom-1 left-0 h-px bg-blue-500 transition-all duration-300 " + (activeSection === item.id ? 'w-full' : 'w-0 group-hover:w-full')} />
                 </button>
               ))}
             </div>
             <button className="md:hidden flex flex-col gap-1.5 z-[110]" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              <div className={`w-6 h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-              <div className={`w-6 h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`} />
-              <div className={`w-6 h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+              <div className={"w-6 h-0.5 bg-white transition-all duration-300 " + (isMenuOpen ? 'rotate-45 translate-y-2' : '')} />
+              <div className={"w-6 h-0.5 bg-white transition-all duration-300 " + (isMenuOpen ? 'opacity-0' : '')} />
+              <div className={"w-6 h-0.5 bg-white transition-all duration-300 " + (isMenuOpen ? '-rotate-45 -translate-y-2' : '')} />
             </button>
           </div>
         </nav>
@@ -958,10 +1029,9 @@ const AppInner = () => {
         {/* MEMBER */}
         <section id="member" className="container mx-auto px-6 mb-40 pt-20">
 
-          {/* ── SEARCH BAR ── */}
+          {/* Search Bar */}
           <div className="reveal mb-10 max-w-lg mx-auto">
             <div className="relative group">
-              {/* icon */}
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none select-none text-base">🔍</span>
               <input
                 type="text"
@@ -971,14 +1041,12 @@ const AppInner = () => {
                 className="search-input w-full bg-white/[0.04] border border-white/10 rounded-2xl pl-11 pr-11 py-4 text-sm text-white placeholder-slate-600 outline-none transition-all duration-300 hover:border-white/20 focus:border-blue-500/40"
               />
               {searchQuery && (
-                <button onClick={() => setSearchQuery('')}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-slate-500 hover:text-white transition-all text-xs">
-                  ✕
-                </button>
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-slate-500 hover:text-white transition-all text-xs"
+                >✕</button>
               )}
             </div>
-
-            {/* result info */}
             {searchQuery && (
               <div className="mt-2.5 flex items-center justify-between px-1 animate-fadeUp">
                 <p className="text-[11px] text-slate-500">
@@ -992,20 +1060,24 @@ const AppInner = () => {
           </div>
 
           {/* Tab */}
-          <div className="reveal flex justify-center mb-12 gap-2 p-1.5 bg-white/5 mx-auto rounded-full border border-white/10 backdrop-blur-md" style={{width:'fit-content'}}>
-            <button onClick={() => setActiveTab('pengurus')}
-              className={`flex items-center justify-center gap-1.5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${activeTab === 'pengurus' ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/40' : 'text-slate-400 hover:text-white'}`}
-              style={{width:'140px'}}>
+          <div className="reveal flex justify-center mb-12 gap-2 p-1.5 bg-white/5 mx-auto rounded-full border border-white/10 backdrop-blur-md" style={{ width: 'fit-content' }}>
+            <button
+              onClick={() => setActiveTab('pengurus')}
+              className={"flex items-center justify-center gap-1.5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 " + (activeTab === 'pengurus' ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/40' : 'text-slate-400 hover:text-white')}
+              style={{ width: '140px' }}
+            >
               Pengurus
-              <span className={`text-xs font-normal bg-white/10 px-1.5 py-0.5 rounded-full transition-all duration-200 ${searchQuery ? 'opacity-60' : 'opacity-0'}`} style={{minWidth:'20px',textAlign:'center'}}>
+              <span className={"text-xs font-normal bg-white/10 px-1.5 py-0.5 rounded-full transition-all duration-200 " + (searchQuery ? 'opacity-60' : 'opacity-0')} style={{ minWidth: '20px', textAlign: 'center' }}>
                 {filteredPengurus.length}
               </span>
             </button>
-            <button onClick={() => setActiveTab('member')}
-              className={`flex items-center justify-center gap-1.5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${activeTab === 'member' ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/40' : 'text-slate-400 hover:text-white'}`}
-              style={{width:'160px'}}>
+            <button
+              onClick={() => setActiveTab('member')}
+              className={"flex items-center justify-center gap-1.5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 " + (activeTab === 'member' ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/40' : 'text-slate-400 hover:text-white')}
+              style={{ width: '160px' }}
+            >
               Semua Member
-              <span className={`text-xs font-normal bg-white/10 px-1.5 py-0.5 rounded-full transition-all duration-200 ${searchQuery ? 'opacity-60' : 'opacity-0'}`} style={{minWidth:'20px',textAlign:'center'}}>
+              <span className={"text-xs font-normal bg-white/10 px-1.5 py-0.5 rounded-full transition-all duration-200 " + (searchQuery ? 'opacity-60' : 'opacity-0')} style={{ minWidth: '20px', textAlign: 'center' }}>
                 {filteredMember.length}
               </span>
             </button>
@@ -1015,20 +1087,26 @@ const AppInner = () => {
           {displayList.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {displayList.map((item, i) => (
-                <div key={i}
+                <div
+                  key={i}
                   className="bg-white/5 border border-white/10 p-4 rounded-3xl hover:bg-blue-600/5 hover:border-blue-500/30 transition-all duration-500 group relative overflow-hidden flex flex-col items-center text-center hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-500/10 animate-fadeUp"
-                  style={{ animationDelay: `${(i % 8) * 0.04}s` }}>
+                  style={{ animationDelay: ((i % 8) * 0.04) + 's' }}
+                >
                   <div className="absolute top-0 right-0 w-20 h-20 bg-blue-500/5 blur-3xl group-hover:bg-blue-500/20 transition-all" />
                   <div className="mb-3 group-hover:scale-110 transition-transform duration-300">
                     <Avatar img={item.img} name={item.name} size="md" />
                   </div>
-                  <h4 className="font-bold text-white text-xs md:text-sm leading-tight w-full"
-                    style={{ display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden' }}>
+                  <h4
+                    className="font-bold text-white text-xs md:text-sm leading-tight w-full"
+                    style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                  >
                     {item.name}
                   </h4>
                   {item.role && (
-                    <p className="text-[10px] md:text-xs text-blue-500 font-black uppercase tracking-wide mt-1 w-full"
-                      style={{ display:'-webkit-box', WebkitLineClamp:1, WebkitBoxOrient:'vertical', overflow:'hidden' }}>
+                    <p
+                      className="text-[10px] md:text-xs text-blue-500 font-black uppercase tracking-wide mt-1 w-full"
+                      style={{ display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                    >
                       {item.role}
                     </p>
                   )}
@@ -1040,8 +1118,10 @@ const AppInner = () => {
               <p className="text-5xl mb-4">🔎</p>
               <p className="text-slate-400 font-bold text-lg mb-1">"{searchQuery}" tidak ditemukan</p>
               <p className="text-slate-600 text-sm">Atau... mungkin ada kata rahasia yang belum kamu coba? 🥚</p>
-              <button onClick={() => setSearchQuery('')}
-                className="mt-6 px-6 py-2.5 rounded-full border border-white/10 text-slate-400 text-sm hover:border-blue-500/30 hover:text-white transition-all">
+              <button
+                onClick={() => setSearchQuery('')}
+                className="mt-6 px-6 py-2.5 rounded-full border border-white/10 text-slate-400 text-sm hover:border-blue-500/30 hover:text-white transition-all"
+              >
                 Reset pencarian
               </button>
             </div>
@@ -1069,8 +1149,11 @@ const AppInner = () => {
             </div>
           </div>
 
-          <div id="galeri" onClick={() => setIsGalleryOpen(true)}
-            className="reveal bg-white/[0.02] border border-white/10 rounded-[2.5rem] p-10 overflow-hidden relative group cursor-pointer hover:border-blue-500/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10">
+          <div
+            id="galeri"
+            onClick={() => setIsGalleryOpen(true)}
+            className="reveal bg-white/[0.02] border border-white/10 rounded-[2.5rem] p-10 overflow-hidden relative group cursor-pointer hover:border-blue-500/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10"
+          >
             <h3 className="text-3xl font-black mb-6 text-white tracking-tighter text-center md:text-left">📸 Galeri</h3>
             <div className="grid grid-cols-2 gap-3 transition-all duration-700 group-hover:scale-105">
               {galeri.slice(0, 4).map((foto, i) => (
@@ -1100,29 +1183,30 @@ const AppInner = () => {
           onClick={() => setShowForm(f => !f)}
           className="fixed bottom-6 right-6 z-[300] w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-500 text-white shadow-2xl shadow-blue-500/40 flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95"
           style={{ boxShadow: '0 8px 30px rgba(59,130,246,0.5)' }}
-          title="Kirim Pesan">
+          title="Kirim Pesan"
+        >
           {showForm ? <span className="text-xl">✕</span> : <span className="text-xl">✉️</span>}
         </button>
       )}
 
       {/* Form Modal */}
       {showForm && stage === 'main' && (
-        <div className="fixed bottom-24 right-6 z-[299] w-[calc(100vw-48px)] max-w-sm animate-eggSlideUp"
+        <div
+          className="fixed bottom-20 right-3 left-3 md:left-auto md:right-6 md:w-80 z-[299] animate-eggSlideUp flex flex-col"
           style={{
             background: 'rgba(8,15,30,0.98)',
             borderRadius: '24px',
             border: '1px solid rgba(255,255,255,0.08)',
             boxShadow: '0 30px 60px rgba(0,0,0,0.8)',
-          }}>
-
-          {/* Header form */}
-          <div className="px-6 pt-6 pb-4 border-b border-white/5">
+            maxHeight: '70vh',
+          }}
+        >
+          <div className="px-6 pt-6 pb-4 border-b border-white/5 flex-shrink-0">
             <p className="text-white font-black text-base">✉️ Kirim Pesan</p>
             <p className="text-slate-500 text-[11px] mt-0.5">Pesan kamu akan langsung diterima admin</p>
           </div>
 
-          <div className="px-6 py-5 flex flex-col gap-3">
-            {/* Nama */}
+          <div className="px-6 py-5 flex flex-col gap-3 overflow-y-auto" style={{ scrollbarWidth: 'none' }}>
             <div>
               <label className="text-[10px] text-slate-500 uppercase tracking-wider font-bold mb-1 block">Nama</label>
               <input
@@ -1135,8 +1219,6 @@ const AppInner = () => {
               />
             </div>
 
-
-            {/* Pesan */}
             <div>
               <label className="text-[10px] text-slate-500 uppercase tracking-wider font-bold mb-1 block">Pesan</label>
               <textarea
@@ -1150,7 +1232,6 @@ const AppInner = () => {
               <p className="text-[10px] text-slate-700 text-right mt-0.5">{formData.pesan.length}/500</p>
             </div>
 
-            {/* Upload Foto */}
             <div>
               <label className="text-[10px] text-slate-500 uppercase tracking-wider font-bold mb-1 block">Foto (opsional)</label>
               <label className="flex items-center gap-3 w-full bg-white/5 border border-white/10 hover:border-blue-500/40 rounded-xl px-4 py-2.5 cursor-pointer transition-all group">
@@ -1159,11 +1240,17 @@ const AppInner = () => {
                   {formData.photo ? formData.photo.name : 'Pilih foto...'}
                 </span>
                 {formData.photo && (
-                  <button onClick={e => { e.preventDefault(); setFormData(f => ({ ...f, photo: null })); }}
-                    className="text-slate-600 hover:text-red-400 transition-colors text-xs">✕</button>
+                  <button
+                    onClick={e => { e.preventDefault(); setFormData(f => ({ ...f, photo: null })); }}
+                    className="text-slate-600 hover:text-red-400 transition-colors text-xs"
+                  >✕</button>
                 )}
-                <input type="file" accept="image/*" className="hidden"
-                  onChange={e => { if (e.target.files[0]) setFormData(f => ({ ...f, photo: e.target.files[0] })); }} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={e => { if (e.target.files[0]) setFormData(f => ({ ...f, photo: e.target.files[0] })); }}
+                />
               </label>
               {formData.photo && (
                 <p className="text-[10px] text-slate-600 mt-1">
@@ -1172,7 +1259,6 @@ const AppInner = () => {
               )}
             </div>
 
-            {/* Status messages */}
             {formStatus === 'success' && (
               <div className="bg-green-500/10 border border-green-500/30 rounded-xl px-4 py-3 text-center animate-fadeUp">
                 <p className="text-green-400 text-sm font-bold">✅ Pesan terkirim!</p>
@@ -1186,15 +1272,15 @@ const AppInner = () => {
               </div>
             )}
 
-            {/* Submit Button */}
             <button
               onClick={handleFormSubmit}
-              disabled={formStatus === 'loading' || formCooldown || !formData.nama.trim()  || !formData.pesan.trim()}
-              className="w-full py-3 rounded-xl text-sm font-black text-white transition-all duration-300 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-cyan-500 shadow-lg shadow-blue-500/20">
+              disabled={formStatus === 'loading' || formCooldown || !formData.nama.trim() || !formData.pesan.trim()}
+              className="w-full py-3 rounded-xl text-sm font-black text-white transition-all duration-300 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-cyan-500 shadow-lg shadow-blue-500/20"
+            >
               {formStatus === 'loading'
                 ? '⏳ Mengirim...'
                 : formCooldown
-                  ? `⏱ Tunggu ${cooldownSecs}s`
+                  ? '⏱ Tunggu ' + cooldownSecs + 's'
                   : '🚀 Kirim Pesan'}
             </button>
           </div>
