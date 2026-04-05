@@ -298,18 +298,6 @@ const playlist = [
     accent: '#c6ff00',
     lyrics: '',
   },
-  // {
-  //   id: 8,
-  //   title: '',
-  //   artist: '',
-  //   cover: `${IK}/`,
-  //   video: '',
-  //   audio: '',
-  //   color1: '',
-  //   color2: '',
-  //   accent: '',
-  //   lyrics: '',
-  // },
 ];
 
 const easterEggs = [
@@ -519,13 +507,62 @@ const parseLRC = (lrcString) => {
   return result.sort((a, b) => a.time - b.time);
 };
 
+// ─── VideoBackground ─────────────────────────────────────────────────────────
+// Komponen terpisah agar video element TIDAK pernah unmount/remount saat lagu ganti.
+// Video hanya ganti src-nya → tidak ada black screen delay sama sekali.
+const VideoBackground = memo(({ song, isPlaying }) => {
+  const videoRef = useRef(null);
+  const prevSrcRef = useRef('');
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !song.video) return;
+    if (prevSrcRef.current === song.video) return;
+    prevSrcRef.current = song.video;
+
+    // Ganti src tanpa unmount — browser langsung mulai buffer
+    video.src = song.video;
+    video.load();
+    // Langsung play (muted) → browser akan buffer dan play secepat mungkin
+    video.play().catch(() => {});
+  }, [song.video]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (isPlaying) video.play().catch(() => {});
+    else video.pause();
+  }, [isPlaying]);
+
+  if (!song.video) return null;
+
+  return (
+    <video
+      ref={videoRef}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="auto"
+      style={{
+        position: 'absolute',
+        width: '100%', height: '100%',
+        top: 0, left: 0,
+        objectFit: 'cover',
+        pointerEvents: 'none',
+        opacity: 0.38,
+        // Tidak ada fade in/out — langsung tampil, tidak ada delay visual
+      }}
+    />
+  );
+});
+
 // ─── SongPlayer ──────────────────────────────────────────────────────────────
 const SongPlayer = memo(({ song, onBack, onClose, openSong }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration]       = useState(0);
   const [isPlaying, setIsPlaying]     = useState(false);
   const [activeLyric, setActiveLyric] = useState(0);
-  const [vidReady, setVidReady]       = useState(false);
   const [lyrics, setLyrics]           = useState([]);
   const [lyricStatus, setLyricStatus] = useState('loading');
   const [volume, setVolume]           = useState(0.45);
@@ -539,8 +576,6 @@ const SongPlayer = memo(({ song, onBack, onClose, openSong }) => {
   const intervalRef = useRef(null);
   const shuffleRef  = useRef(false);
   const repeatRef   = useRef(false);
-  const videoRef    = useRef(null);
-  const iframeRef   = useRef(null);
 
   useEffect(() => { shuffleRef.current = isShuffle; }, [isShuffle]);
   useEffect(() => { repeatRef.current  = isRepeat;  }, [isRepeat]);
@@ -580,7 +615,6 @@ const SongPlayer = memo(({ song, onBack, onClose, openSong }) => {
     setDuration(0);
     setIsPlaying(false);
     setActiveLyric(0);
-    setVidReady(false);
     setLyrics([]);
     setLyricStatus('loading');
 
@@ -597,14 +631,8 @@ const SongPlayer = memo(({ song, onBack, onClose, openSong }) => {
       }
     };
 
-    const onPlay = () => {
-      setIsPlaying(true);
-      startTimer();
-    };
-
-    const onPause = () => {
-      setIsPlaying(false);
-    };
+    const onPlay  = () => { setIsPlaying(true);  startTimer(); };
+    const onPause = () => { setIsPlaying(false); };
 
     const onEnded = () => {
       stopTimer();
@@ -648,23 +676,6 @@ const SongPlayer = memo(({ song, onBack, onClose, openSong }) => {
     if (audioRef.current) audioRef.current.volume = isMuted ? 0 : volume;
   }, [volume, isMuted]);
 
-  // ── Sync background video with isPlaying state ───────────────────────────
-  useEffect(() => {
-    if (videoRef.current) {
-      if (isPlaying) videoRef.current.play().catch(() => {});
-      else           videoRef.current.pause();
-    }
-    if (iframeRef.current) {
-      const cmd = isPlaying ? 'playVideo' : 'pauseVideo';
-      try {
-        iframeRef.current.contentWindow.postMessage(
-          JSON.stringify({ event: 'command', func: cmd, args: [] }),
-          '*'
-        );
-      } catch (_) {}
-    }
-  }, [isPlaying]);
-
   // ── Play/Pause handler ───────────────────────────────────────────────────
   const handlePlayPause = useCallback(() => {
     if (!audioRef.current) return;
@@ -672,14 +683,13 @@ const SongPlayer = memo(({ song, onBack, onClose, openSong }) => {
     else audioRef.current.pause();
   }, []);
 
-  // ── Spacebar play/pause (like Spotify) ───────────────────────────────────
+  // ── Spacebar play/pause ───────────────────────────────────────────────────
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // Jangan trigger jika user sedang fokus di input / textarea
       const tag = document.activeElement?.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement?.isContentEditable) return;
       if (e.code === 'Space') {
-        e.preventDefault(); // Cegah scroll halaman
+        e.preventDefault();
         handlePlayPause();
       }
     };
@@ -810,54 +820,8 @@ const SongPlayer = memo(({ song, onBack, onClose, openSong }) => {
     );
   };
 
-  const isMP4 = song.video && (song.video.includes('/') || song.video.startsWith('http'));
-  const isYT  = song.video && !isMP4;
-  const dur   = duration > 0 ? duration : 1;
+  const dur = duration > 0 ? duration : 1;
   const progressPct = Math.min((currentTime / dur) * 100, 100);
-
-  const renderVideoBg = () => {
-    if (isYT) return (
-      <iframe
-        key={song.video}
-        ref={iframeRef}
-        src={`https://www.youtube.com/embed/${song.video}?autoplay=1&mute=1&loop=1&playlist=${song.video}&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1`}
-        allow="autoplay; encrypted-media"
-        onLoad={() => setVidReady(true)}
-        className="absolute"
-        style={{
-          width: '200%', height: '200%', top: '-50%', left: '-50%',
-          border: 'none', pointerEvents: 'none',
-          opacity: vidReady ? 0.38 : 0, transition: 'opacity 1.4s ease',
-        }}
-        title="bg"
-      />
-    );
-    if (isMP4) return (
-      <video
-        key={song.video}
-        ref={videoRef}
-        src={song.video}
-        autoPlay
-        muted
-        loop
-        playsInline
-        onCanPlay={() => setVidReady(true)}
-        className="absolute"
-        style={{
-          width: '100%', height: '100%', top: 0, left: 0,
-          objectFit: 'cover', pointerEvents: 'none',
-          opacity: vidReady ? 0.38 : 0, transition: 'opacity 1.4s ease',
-        }}
-      />
-    );
-    return (
-      <>
-        <div className="absolute w-72 h-72 rounded-full blur-[90px] pointer-events-none orb-1" style={{ background: song.color1 + '80', top: '15%', left: '20%' }} />
-        <div className="absolute w-80 h-80 rounded-full blur-[110px] pointer-events-none orb-2" style={{ background: song.accent + '40', bottom: '20%', right: '15%' }} />
-        <div className="absolute w-56 h-56 rounded-full blur-[70px] pointer-events-none orb-3" style={{ background: song.color2 + '60', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }} />
-      </>
-    );
-  };
 
   return (
     <div className="fixed inset-0 z-[160] flex flex-col animate-fadeIn overflow-hidden">
@@ -868,7 +832,8 @@ const SongPlayer = memo(({ song, onBack, onClose, openSong }) => {
                        radial-gradient(ellipse at 70% 70%, ${song.color2}bb 0%, transparent 55%),
                        #020617`,
         }} />
-        {renderVideoBg()}
+        {/* VideoBackground tidak pakai key → tidak pernah unmount */}
+        <VideoBackground song={song} isPlaying={isPlaying} />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(2,6,23,0.6) 0%, rgba(2,6,23,0.3) 35%, rgba(2,6,23,0.65) 75%, rgba(2,6,23,0.97) 100%)' }} />
         <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse at 50% 50%, ${song.accent}12 0%, transparent 70%)` }} />
       </div>
@@ -1431,6 +1396,7 @@ const AppInner = () => {
 
   const handlePlaylistOpen = useCallback(() => {
     setIsPlaylistOpen(true);
+    setShowForm(false);
     introAudioRef.current.pause();
   }, []);
 
@@ -1902,7 +1868,8 @@ const AppInner = () => {
         </footer>
       </div>
 
-      {stage === 'main' && (
+      {/* FAB tombol kirim pesan */}
+      {stage === 'main' && !isPlaylistOpen && (
         <button
           onClick={() => setShowForm(f => !f)}
           className="fixed bottom-6 right-6 z-[300] w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-500 text-white shadow-2xl shadow-blue-500/40 flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95"
@@ -1913,7 +1880,8 @@ const AppInner = () => {
         </button>
       )}
 
-      {showForm && stage === 'main' && (
+      {/* Form panel */}
+      {showForm && stage === 'main' && !isPlaylistOpen && (
         <div className="fixed bottom-20 right-3 left-3 md:left-auto md:right-6 md:w-80 z-[299] animate-eggSlideUp flex flex-col"
           style={{
             background: 'rgba(8,15,30,0.98)', borderRadius: '24px',
